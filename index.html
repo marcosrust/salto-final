@@ -10,20 +10,20 @@
   --fundo-lobby:url("Screenshot_20261115-133440_Dola.png");
   --fundo-espera:url("Screenshot_20261115-161520_Dola.png");
 }
-html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:Arial,sans-serif;color:#fff;user-select:none;-webkit-user-select:none}
+html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:Arial,sans-serif;color:#fff;user-select:none;-webkit-user-select:none;touch-action:none}
 .tela{position:fixed;inset:0;background:#000 center/cover no-repeat}
 .sombra{position:absolute;inset:0;background:linear-gradient(to top,#000c 0%,#0000 45%)}
 .escura{position:absolute;inset:0;background:#000a}
-#abertura,#nome,#pers{background-image:var(--fundo-abertura)}
-#nome,#pers{display:none}
+#abertura,#nome,#pers,#carreg{background-image:var(--fundo-abertura)}
+#nome,#pers,#carreg{display:none}
 #lobby{display:none;background-image:var(--fundo-lobby)}
 #espera{display:none;background-image:var(--fundo-espera)}
 #aviao{display:none;background:linear-gradient(#2f8fe8,#9fd6ff 70%,#d8f0ff)}
-#abertura .base{position:absolute;left:0;right:0;bottom:6%;display:flex;flex-direction:column;align-items:center;gap:10px}
-#txt{font-weight:bold;letter-spacing:2px;font-size:clamp(14px,3vw,22px);text-shadow:0 2px 6px #000}
-#carga{width:60%;max-width:520px;height:14px;border-radius:10px;background:#0008;border:2px solid #fff8;overflow:hidden}
-#barra{width:0;height:100%;background:linear-gradient(90deg,#ff6f00,#ffb300)}
-#pct{font-size:clamp(12px,2.5vw,16px);color:#ffe082;text-shadow:0 2px 6px #000}
+.base{position:absolute;left:0;right:0;bottom:6%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.txt{font-weight:bold;letter-spacing:2px;font-size:clamp(14px,3vw,22px);text-shadow:0 2px 6px #000}
+.carga{width:60%;max-width:520px;height:14px;border-radius:10px;background:#0008;border:2px solid #fff8;overflow:hidden}
+.barra{width:0;height:100%;background:linear-gradient(90deg,#ff6f00,#ffb300)}
+.pct{font-size:clamp(12px,2.5vw,16px);color:#ffe082;text-shadow:0 2px 6px #000}
 button{padding:14px 56px;font-size:clamp(18px,3.5vw,26px);font-weight:bold;border:none;border-radius:10px;background:#ffb300;color:#222;box-shadow:0 5px 0 #a66f00}
 button:active{transform:translateY(4px);box-shadow:0 1px 0 #a66f00}
 button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shadow:none;border:1px solid #fff6}
@@ -36,7 +36,6 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
 .card:active{border-color:#ffb300}
 .card svg{width:80px;height:80px;display:block;margin:0 auto 8px}
 
-/* LOBBY */
 .moedas{position:absolute;top:3%;right:2.5%;display:flex;gap:8px;align-items:center}
 .pilula{background:#000b;border:1px solid #fff4;border-radius:20px;padding:5px 12px;font-weight:bold;font-size:clamp(13px,2.6vw,17px)}
 #avatar{width:clamp(38px,7vw,48px);height:clamp(38px,7vw,48px);padding:0;border-radius:50%;font-size:20px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:none}
@@ -50,37 +49,44 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
 .modo.ativo{border-color:#ffb300;color:#ffb300}
 .modo.bloq{opacity:.6}
 #iniciar{padding:12px 44px;font-size:clamp(16px,3.2vw,22px)}
-#toast{position:fixed;left:50%;top:14%;transform:translateX(-50%);background:#000d;border:1px solid #ffb300;padding:8px 18px;border-radius:20px;font-size:14px;display:none;z-index:6}
-#perfil{position:fixed;inset:0;background:#000b;display:none;z-index:5}
+#toast{position:fixed;left:50%;top:14%;transform:translateX(-50%);background:#000d;border:1px solid #ffb300;padding:8px 18px;border-radius:20px;font-size:14px;display:none;z-index:20}
+#perfil{position:fixed;inset:0;background:#000b;display:none;z-index:15}
 .av-grande{width:70px;height:70px;border-radius:50%;background:#ffb300;color:#222;font-size:34px;font-weight:bold;display:flex;align-items:center;justify-content:center}
 #pNome{font-size:22px;font-weight:bold}
 #pTipo,#pNivel{font-size:14px;color:#ffe082}
 .linha{display:flex;gap:10px}
-#girar{position:fixed;inset:0;background:#000;display:none;align-items:center;justify-content:center;text-align:center;font-size:20px;z-index:9;padding:20px}
+#girar{position:fixed;inset:0;background:#000;display:none;align-items:center;justify-content:center;text-align:center;font-size:20px;z-index:30;padding:20px}
 @media (orientation:portrait){#girar{display:flex}}
 
-/* SALA DE ESPERA */
-#sair{position:absolute;top:3%;left:2.5%}
-#jogs{position:absolute;top:3%;right:2.5%}
-.contagem{position:absolute;top:4%;left:0;right:0;text-align:center;text-shadow:0 2px 8px #000}
-.contagem small{display:block;font-weight:bold;letter-spacing:2px;font-size:clamp(12px,2.6vw,16px)}
-#cont{font-size:clamp(44px,12vw,80px);font-weight:bold;color:#ffb300;line-height:1}
-.heroi{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);text-align:center}
-.heroi svg{width:clamp(90px,18vw,130px);height:auto;filter:drop-shadow(0 6px 6px #0008)}
-#heroiNome{display:inline-block;margin-top:4px;background:#000b;border-radius:20px;padding:4px 14px;font-weight:bold;font-size:14px}
-.dica{position:absolute;left:0;right:0;bottom:1.5%;text-align:center;font-size:12px;color:#ffe082;text-shadow:0 1px 4px #000}
+.heroi{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);text-align:center}
+.heroi svg{height:56vh;width:auto;filter:drop-shadow(0 8px 8px #0009)}
+#lobNome{display:inline-block;margin-top:4px;background:#000b;border-radius:20px;padding:4px 16px;font-weight:bold;font-size:15px}
 
-/* AVIAO */
+#sair{position:absolute;top:3%;left:2.5%;z-index:3}
+#jogs{position:absolute;top:3%;right:2.5%;z-index:3}
+.contagem{position:absolute;top:3%;left:0;right:0;text-align:center;text-shadow:0 2px 8px #000;pointer-events:none;z-index:3}
+.contagem small{display:block;font-weight:bold;letter-spacing:2px;font-size:clamp(11px,2.4vw,15px)}
+#cont{font-size:clamp(36px,10vw,64px);font-weight:bold;color:#ffb300;line-height:1}
+#mundo{position:absolute;inset:0}
+.bn{position:absolute;left:0;top:0;will-change:transform}
+.bn svg{display:block;width:100%;height:auto;transform-origin:50% 100%}
+.nm{position:absolute;left:50%;top:-15px;transform:translateX(-50%);font-size:10px;background:#0009;padding:1px 6px;border-radius:10px;white-space:nowrap}
+.bn.eu .nm{background:#ffb300;color:#222;font-weight:bold}
+#joy{position:absolute;left:4%;bottom:8%;width:120px;height:120px;border-radius:50%;background:#0006;border:2px solid #fff6;z-index:50;touch-action:none}
+#knob{position:absolute;left:50%;top:50%;width:52px;height:52px;border-radius:50%;background:#fffa;transform:translate(-50%,-50%)}
+.acao{position:absolute;right:4%;z-index:50;padding:14px 22px;font-size:16px;touch-action:none}
+#bPular{bottom:22%}
+#bAgachar{bottom:6%;background:#4fc3f7;box-shadow:0 5px 0 #1e7fa6}
+
 .nuvem{position:absolute;width:140px;height:44px;border-radius:44px;background:#fffc;animation:nuvem linear infinite}
 .nuvem::before{content:"";position:absolute;left:28px;top:-22px;width:60px;height:60px;border-radius:50%;background:#fffc}
 @keyframes nuvem{from{transform:translateX(0)}to{transform:translateX(-140vw)}}
-#plane{position:absolute;top:30%;left:-30%;width:clamp(180px,34vw,300px);animation:voo 20s linear forwards}
+#plane{position:absolute;top:30%;left:-30%;width:clamp(180px,34vw,300px);animation:voo 20s linear forwards;pointer-events:none}
 #plane svg{width:100%;display:block;animation:balanco 2s ease-in-out infinite}
 @keyframes voo{from{left:-30%}to{left:105%}}
 @keyframes balanco{50%{transform:translateY(8px) rotate(1.5deg)}}
-.faixa{position:absolute;left:0;right:0;bottom:0;height:18%;background:linear-gradient(#1d8fb8,#0b5d86)}
-.faixa::before{content:"";position:absolute;left:30%;right:25%;top:-10px;height:22px;border-radius:50%;background:#e7cf91}
-#saltar{position:absolute;right:3%;bottom:6%;background:#ff5722;color:#fff;box-shadow:0 5px 0 #a8330d}
+.faixa{position:absolute;left:0;right:0;bottom:0;height:18%;background:linear-gradient(#1d8fb8,#0b5d86);pointer-events:none}
+#saltar{position:absolute;right:4%;bottom:14%;z-index:50;background:#ff5722;color:#fff;box-shadow:0 5px 0 #a8330d;padding:18px 48px}
 #tAviao{position:absolute;top:4%;left:0;right:0;text-align:center;font-weight:bold;font-size:clamp(14px,3vw,20px);color:#fff;text-shadow:0 2px 6px #0007}
 </style>
 </head>
@@ -90,9 +96,9 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
 <div id="abertura" class="tela">
   <div class="sombra"></div>
   <div class="base">
-    <div id="txt">CARREGANDO PARTIDA...</div>
-    <div id="carga"><div id="barra"></div></div>
-    <div id="pct">0%</div>
+    <div class="txt" id="txt">CARREGANDO PARTIDA...</div>
+    <div class="carga" id="carga"><div class="barra" id="barra"></div></div>
+    <div class="pct" id="pct">0%</div>
     <button id="comecar" style="display:none">COMEÇAR</button>
   </div>
 </div>
@@ -126,19 +132,17 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
 
 <div id="lobby" class="tela">
   <div class="sombra"></div>
-
+  <div class="heroi"><div id="lobSvg"></div><span id="lobNome"></span></div>
   <div class="moedas">
     <div class="pilula">💎 <span id="diamantes">0</span></div>
     <div class="pilula">🪙 <span id="ouro">0</span></div>
     <button id="avatar" class="peq">?</button>
   </div>
-
   <div class="lateral">
     <div class="lat" data-msg="Loja: em breve"><span>🛒</span>LOJA</div>
     <div class="lat" data-msg="Passe: em breve"><span>🎫</span>PASSE</div>
     <div class="lat" data-msg="Inventário: em breve"><span>🎒</span>INVENTÁRIO</div>
   </div>
-
   <div class="direita">
     <div class="modos">
       <div class="modo ativo" id="mClassico">CLÁSSICO</div>
@@ -148,13 +152,24 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
   </div>
 </div>
 
+<div id="carreg" class="tela">
+  <div class="sombra"></div>
+  <div class="base">
+    <div class="txt" id="txt2">ENTRANDO NA PARTIDA...</div>
+    <div class="carga"><div class="barra" id="barra2"></div></div>
+    <div class="pct" id="pct2">0%</div>
+  </div>
+</div>
+
 <div id="espera" class="tela">
   <div class="sombra"></div>
+  <div id="mundo"></div>
   <button id="sair" class="peq">SAIR</button>
-  <div class="pilula" id="jogs">👥 1/45</div>
-  <div class="contagem"><small>A PARTIDA COMEÇA EM</small><div id="cont">15</div></div>
-  <div class="heroi"><div id="heroiSvg"></div><span id="heroiNome"></span></div>
-  <div class="dica">Aguardando os outros jogadores...</div>
+  <div class="pilula" id="jogs">👥 45/45</div>
+  <div class="contagem"><small>A PARTIDA COMEÇA EM</small><div id="cont">20</div></div>
+  <div id="joy"><div id="knob"></div></div>
+  <button id="bPular" class="acao">PULAR</button>
+  <button id="bAgachar" class="acao">AGACHAR</button>
 </div>
 
 <div id="aviao" class="tela">
@@ -197,13 +212,17 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
 var $=function(i){return document.getElementById(i)};
 var barra=$('barra'),txt=$('txt'),pct=$('pct'),comecar=$('comecar'),carga=$('carga'),
     abertura=$('abertura'),telaNome=$('nome'),telaPers=$('pers'),lobby=$('lobby'),
-    espera=$('espera'),aviao=$('aviao'),
+    carreg=$('carreg'),espera=$('espera'),aviao=$('aviao'),
     inp=$('inpNome'),erro=$('erro'),toast=$('toast'),perfil=$('perfil');
 
 var MAX_JOGADORES=45;
+var TEMPO_ESPERA=20;
+/* Area andavel da ilha (parede invisivel). Valores de 0 a 1 da tela.
+   cx,cy = centro | rx,ry = tamanho. Ajuste aqui se alguem encostar na agua. */
+var ILHA={cx:.56,cy:.76,rx:.33,ry:.17};
 
 function mostrar(t){
-  [abertura,telaNome,telaPers,lobby,espera,aviao].forEach(function(e){e.style.display='none';});
+  [abertura,telaNome,telaPers,lobby,carreg,espera,aviao].forEach(function(e){e.style.display='none';});
   t.style.display='block';
 }
 var tt;
@@ -212,14 +231,10 @@ function aviso(m){
   clearTimeout(tt);tt=setTimeout(function(){toast.style.display='none';},1800);
 }
 
-var FUNDO_A='Screenshot_20261115-153556_Fotos~2.jpg';
-var FUNDO_L='Screenshot_20261115-133440_Dola.png';
-var FUNDO_E='Screenshot_20261115-161520_Dola.png';
-var pronto=0,total=3;
+var FUNDOS=['Screenshot_20261115-153556_Fotos~2.jpg','Screenshot_20261115-133440_Dola.png','Screenshot_20261115-161520_Dola.png'];
+var pronto=0,total=FUNDOS.length;
 function ok(){pronto++;}
-[FUNDO_A,FUNDO_L,FUNDO_E].forEach(function(u){
-  var im=new Image();im.onload=im.onerror=ok;im.src=u;
-});
+FUNDOS.forEach(function(u){var im=new Image();im.onload=im.onerror=ok;im.src=u;});
 
 var p=0;
 var t=setInterval(function(){
@@ -237,12 +252,18 @@ var t=setInterval(function(){
 var salvo='',genero='';
 try{salvo=localStorage.getItem('sf_nome')||'';genero=localStorage.getItem('sf_genero')||'';}catch(e){}
 
+function boneco(g,cor){
+  return '<svg viewBox="0 0 60 100"><rect x="18" y="62" width="9" height="30" rx="4" fill="#33402a"/><rect x="33" y="62" width="9" height="30" rx="4" fill="#33402a"/><rect x="14" y="34" width="32" height="34" rx="10" fill="'+cor+'"/><rect x="6" y="36" width="9" height="26" rx="4" fill="'+cor+'"/><rect x="45" y="36" width="9" height="26" rx="4" fill="'+cor+'"/><circle cx="30" cy="22" r="14" fill="#e0b48a"/><path d="M16 20 Q30 -4 44 20 L44 15 Q30 -8 16 15 Z" fill="#4a5a2a"/>'+(g==='fem'?'<path d="M42 22 Q56 28 50 48 Q46 36 40 32 Z" fill="#6b4a2b"/>':'')+'<rect x="20" y="19" width="20" height="7" rx="3" fill="#111"/></svg>';
+}
+
 function atualizarPerfil(){
   var ini=(salvo||'?').charAt(0).toUpperCase();
   $('avatar').textContent=ini;
   $('pAv').textContent=ini;
   $('pNome').textContent=salvo;
   $('pTipo').textContent='Personagem '+(genero==='fem'?'feminino':'masculino');
+  $('lobSvg').innerHTML=boneco(genero,'#556b2f');
+  $('lobNome').textContent=salvo;
 }
 
 comecar.onclick=function(){inp.value=salvo;mostrar(telaNome);};
@@ -276,52 +297,122 @@ for(var i=0;i<lats.length;i++){
 $('mClassico').onclick=function(){aviso('Modo Clássico selecionado');};
 $('mRank').onclick=function(){aviso('Ranqueado: em breve');};
 
-/* SALA DE ESPERA */
-var timerE=null,timerA=null;
-function parar(){clearInterval(timerE);clearInterval(timerA);}
-
+/* CONTROLE DE TEMPO */
+var timerC=null,timerE=null,timerA=null,raf=0,rodando=false;
+function parar(){
+  clearInterval(timerC);clearInterval(timerE);clearInterval(timerA);
+  rodando=false;cancelAnimationFrame(raf);
+}
 function irLobby(){parar();mostrar(lobby);}
 
-function iniciarEspera(){
+/* CARREGAMENTO */
+function iniciarCarreg(){
   parar();
-  var seg=15,jog=1;
-  $('heroiSvg').innerHTML=$(genero==='fem'?'fem':'masc').querySelector('svg').outerHTML;
-  $('heroiNome').textContent=salvo;
+  var c=0,dicas=['Escolhendo o ponto de salto...','Reunindo os jogadores...','Preparando a ilha...'];
+  $('barra2').style.width='0';$('pct2').textContent='0%';
+  mostrar(carreg);
+  timerC=setInterval(function(){
+    c+=Math.random()*4+2;
+    if(c>100)c=100;
+    $('barra2').style.width=c+'%';
+    $('pct2').textContent=Math.floor(c)+'%';
+    $('txt2').textContent=dicas[Math.min(2,Math.floor(c/34))];
+    if(c>=100){clearInterval(timerC);setTimeout(entrarIlha,300);}
+  },100);
+}
+$('iniciar').onclick=iniciarCarreg;
+$('sair').onclick=irLobby;
+
+/* ILHA */
+var W=innerWidth,H=innerHeight,ents=[],eu=null,jv={x:0,y:0},keys={},agach=false,ultimo=0;
+var NOMES=['Lobo','Raio','Sombra','Tigre','Falcão','Ninja','Alpha','Dragão','Fênix','Trovão','Viper','Rei','Titan','Gato','Nova'];
+var CORES=['#556b2f','#8d3b2f','#2f5d8d','#7a5c2a','#5b3b7a','#2f7a6c','#8a2f5a','#4a4a4a','#b8862b'];
+
+function dentro(e){
+  var dx=(e.x-ILHA.cx)/ILHA.rx,dy=(e.y-ILHA.cy)/ILHA.ry,l=Math.sqrt(dx*dx+dy*dy);
+  if(l>1){e.x=ILHA.cx+dx/l*ILHA.rx;e.y=ILHA.cy+dy/l*ILHA.ry;return true;}
+  return false;
+}
+function pontoIlha(){
+  var a=Math.random()*6.283,r=Math.sqrt(Math.random())*.95;
+  return {x:ILHA.cx+Math.cos(a)*ILHA.rx*r,y:ILHA.cy+Math.sin(a)*ILHA.ry*r};
+}
+function criar(nome,g,cor,bot){
+  var pt=pontoIlha();
+  var el=document.createElement('div');
+  el.className='bn'+(bot?'':' eu');
+  el.innerHTML=boneco(g,cor)+'<div class="nm"></div>';
+  el.lastChild.textContent=nome;
+  $('mundo').appendChild(el);
+  return {x:pt.x,y:pt.y,z:0,vz:0,ag:false,el:el,svg:el.firstChild,bot:bot,tx:pt.x,ty:pt.y,t:Math.random()*2,parado:false};
+}
+function pular(e){if(e.z<=0){e.vz=H*0.75;}}
+
+function entrarIlha(){
+  parar();
+  W=innerWidth;H=innerHeight;
+  $('mundo').innerHTML='';ents=[];
+  for(var i=0;i<MAX_JOGADORES-1;i++){
+    ents.push(criar(NOMES[Math.floor(Math.random()*NOMES.length)]+(Math.floor(Math.random()*99)+1),Math.random()<.5?'fem':'masc',CORES[Math.floor(Math.random()*CORES.length)],true));
+  }
+  eu=criar(salvo,genero,'#556b2f',false);
+  eu.x=ILHA.cx;eu.y=ILHA.cy;
+  ents.push(eu);
+  var seg=TEMPO_ESPERA;
   $('cont').textContent=seg;
-  $('jogs').textContent='👥 1/'+MAX_JOGADORES;
   mostrar(espera);
+  rodando=true;ultimo=performance.now();
+  raf=requestAnimationFrame(laco);
   timerE=setInterval(function(){
-    seg--;
-    jog=Math.min(MAX_JOGADORES,jog+Math.ceil(Math.random()*5));
-    if(seg<=1)jog=MAX_JOGADORES;
-    $('cont').textContent=seg;
-    $('jogs').textContent='👥 '+jog+'/'+MAX_JOGADORES;
+    seg--;$('cont').textContent=seg;
     if(seg<=0){clearInterval(timerE);iniciarAviao();}
   },1000);
 }
-$('iniciar').onclick=iniciarEspera;
-$('sair').onclick=irLobby;
 
-/* AVIAO */
-function iniciarAviao(){
-  parar();
-  var seg=20;
-  var pl=$('plane');
-  pl.style.animation='none';void pl.offsetWidth;pl.style.animation='';
-  $('tAviao').textContent='Salte quando quiser! '+seg+'s';
-  mostrar(aviao);
-  timerA=setInterval(function(){
-    seg--;
-    $('tAviao').textContent='Salte quando quiser! '+seg+'s';
-    if(seg<=0)saltar();
-  },1000);
+function laco(ts){
+  if(!rodando)return;
+  var dt=Math.min(.05,(ts-ultimo)/1000);ultimo=ts;
+  var vel=H*.5;
+  for(var i=0;i<ents.length;i++){
+    var e=ents[i],mx=0,my=0;
+    if(e===eu){
+      mx=jv.x+(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0);
+      my=jv.y+(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0);
+      e.ag=agach||!!keys.Shift;
+      var l=Math.sqrt(mx*mx+my*my);if(l>1){mx/=l;my/=l;}
+    }else{
+      e.t-=dt;
+      if(e.t<=0){
+        var q=pontoIlha();e.tx=q.x;e.ty=q.y;e.t=1.5+Math.random()*3.5;e.parado=Math.random()<.3;
+        e.ag=Math.random()<.08;
+      }
+      if(!e.parado){
+        var ddx=(e.tx-e.x)*W,ddy=(e.ty-e.y)*H,d=Math.sqrt(ddx*ddx+ddy*ddy);
+        if(d>8){mx=ddx/d*.5;my=ddy/d*.5;}
+      }
+      if(Math.random()<dt*.15)pular(e);
+    }
+    var f=e.ag?.5:1;
+    e.x+=mx*vel*f*dt/W;
+    e.y+=my*vel*.6*f*dt/H;
+    dentro(e);
+    if(e.z>0||e.vz>0){e.vz-=H*3.2*dt;e.z+=e.vz*dt;if(e.z<=0){e.z=0;e.vz=0;}}
+    var w=H*.09*(.65+.7*e.y);
+    e.el.style.width=w+'px';
+    e.el.style.zIndex=Math.floor(e.y*1000);
+    e.el.style.transform='translate('+(e.x*W-w/2)+'px,'+(e.y*H-w*1.667-e.z*(.65+.7*e.y))+'px)';
+    e.svg.style.transform='scaleY('+(e.ag?.72:1)+')';
+  }
+  raf=requestAnimationFrame(laco);
 }
-function saltar(){
-  parar();
-  aviso('Em breve: a queda livre!');
-  setTimeout(irLobby,1800);
+
+/* CONTROLES */
+var joy=$('joy'),knob=$('knob'),jid=null;
+function moverJ(ev){
+  var r=joy.getBoundingClientRect(),m=r.width/2;
+  var dx=ev.clientX-(r.left+m),dy=ev.clientY-(r.top+m),l=Math.sqrt(dx*dx+dy*dy);
+  if(l>m){dx*=m/l;dy*=m/l;}
+  jv.x=dx/m;jv.y=dy/m;
+  knob.style.transform='translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px))';
 }
-$('saltar').onclick=saltar;
-</script>
-</body>
-</html>
+function soltarJ(){jid=null;jv.x=0;jv.y=0;knob.style.transform
