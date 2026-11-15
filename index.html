@@ -217,8 +217,6 @@ var barra=$('barra'),txt=$('txt'),pct=$('pct'),comecar=$('comecar'),carga=$('car
 
 var MAX_JOGADORES=45;
 var TEMPO_ESPERA=20;
-/* Area andavel da ilha (parede invisivel). Valores de 0 a 1 da tela.
-   cx,cy = centro | rx,ry = tamanho. Ajuste aqui se alguem encostar na agua. */
 var ILHA={cx:.56,cy:.76,rx:.33,ry:.17};
 
 function mostrar(t){
@@ -297,7 +295,6 @@ for(var i=0;i<lats.length;i++){
 $('mClassico').onclick=function(){aviso('Modo Clássico selecionado');};
 $('mRank').onclick=function(){aviso('Ranqueado: em breve');};
 
-/* CONTROLE DE TEMPO */
 var timerC=null,timerE=null,timerA=null,raf=0,rodando=false;
 function parar(){
   clearInterval(timerC);clearInterval(timerE);clearInterval(timerA);
@@ -305,7 +302,6 @@ function parar(){
 }
 function irLobby(){parar();mostrar(lobby);}
 
-/* CARREGAMENTO */
 function iniciarCarreg(){
   parar();
   var c=0,dicas=['Escolhendo o ponto de salto...','Reunindo os jogadores...','Preparando a ilha...'];
@@ -323,7 +319,6 @@ function iniciarCarreg(){
 $('iniciar').onclick=iniciarCarreg;
 $('sair').onclick=irLobby;
 
-/* ILHA */
 var W=innerWidth,H=innerHeight,ents=[],eu=null,jv={x:0,y:0},keys={},agach=false,ultimo=0;
 var NOMES=['Lobo','Raio','Sombra','Tigre','Falcão','Ninja','Alpha','Dragão','Fênix','Trovão','Viper','Rei','Titan','Gato','Nova'];
 var CORES=['#556b2f','#8d3b2f','#2f5d8d','#7a5c2a','#5b3b7a','#2f7a6c','#8a2f5a','#4a4a4a','#b8862b'];
@@ -392,7 +387,7 @@ function laco(ts){
       }
       if(Math.random()<dt*.15)pular(e);
     }
-    var f=e.ag?.5:1;
+    var f=e.ag ? 0.5 : 1;
     e.x+=mx*vel*f*dt/W;
     e.y+=my*vel*.6*f*dt/H;
     dentro(e);
@@ -401,7 +396,7 @@ function laco(ts){
     e.el.style.width=w+'px';
     e.el.style.zIndex=Math.floor(e.y*1000);
     e.el.style.transform='translate('+(e.x*W-w/2)+'px,'+(e.y*H-w*1.667-e.z*(.65+.7*e.y))+'px)';
-    e.svg.style.transform='scaleY('+(e.ag?.72:1)+')';
+    e.svg.style.transform='scaleY('+(e.ag ? 0.72 : 1)+')';
   }
   raf=requestAnimationFrame(laco);
 }
@@ -415,57 +410,6 @@ function moverJ(ev){
   jv.x=dx/m;jv.y=dy/m;
   knob.style.transform='translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px))';
 }
-function soltarJ(){jid=null;jv.x=0;jv.y=0;knob.style.transform
 function soltarJ(){jid=null;jv.x=0;jv.y=0;knob.style.transform='translate(-50%,-50%)';}
-joy.onpointerdown=function(ev){jid=ev.pointerId;joy.setPointerCapture(ev.pointerId);moverJ(ev);};
-joy.onpointermove=function(ev){if(ev.pointerId===jid)moverJ(ev);};
-joy.onpointerup=soltarJ;joy.onpointercancel=soltarJ;
-$('bPular').onpointerdown=function(){if(eu)pular(eu);};
-$('bAgachar').onpointerdown=function(){agach=true;};
-$('bAgachar').onpointerup=function(){agach=false;};
-$('bAgachar').onpointercancel=function(){agach=false;};
-window.addEventListener('keydown',function(ev){keys[ev.key]=true;if(ev.key===' '&&eu)pular(eu);});
-window.addEventListener('keyup',function(ev){keys[ev.key]=false;});
-window.addEventListener('resize',function(){W=innerWidth;H=innerHeight;});
-
-var saltou=false;
-function iniciarAviao(){
-  parar();
-  var seg=20;saltou=false;
-  var pl=$('plane');
-  pl.style.animation='none';void pl.offsetWidth;pl.style.animation='';
-  $('tAviao').textContent='Salte quando quiser! '+seg+'s';
-  mostrar(aviao);
-  timerA=setInterval(function(){
-    seg--;
-    $('tAviao').textContent='Salte quando quiser! '+seg+'s';
-    if(seg<=0)saltar();
-  },1000);
-}
-function saltar(){
-  if(saltou)return;
-  saltou=true;
-  parar();
-  aviso('Em breve: a queda livre!');
-  setTimeout(irLobby,1800);
-}
-$('saltar').onpointerdown=saltar;
-$('saltar').onclick=saltar;
-
-function telaCheia(){
-  var d=document.documentElement;
-  var f=d.requestFullscreen||d.webkitRequestFullscreen;
-  if(!f)return;
-  try{
-    var r=f.call(d);
-    if(r&&r.then)r.then(function(){
-      try{screen.orientation.lock('landscape');}catch(e){}
-    }).catch(function(){});
-  }catch(e){}
-}
-document.addEventListener('pointerup',function(){
-  if(!document.fullscreenElement)telaCheia();
-});
-</script>
-</body>
-</html>
+joy.onpointerdown=function(ev){jid=ev.pointerId;if(joy.setPointerCapture)try{joy.setPointerCapture(ev.pointerId);}catch(e){}moverJ(ev);};
+joy.onpointermove=function(ev)
