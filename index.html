@@ -416,3 +416,56 @@ function moverJ(ev){
   knob.style.transform='translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px))';
 }
 function soltarJ(){jid=null;jv.x=0;jv.y=0;knob.style.transform
+function soltarJ(){jid=null;jv.x=0;jv.y=0;knob.style.transform='translate(-50%,-50%)';}
+joy.onpointerdown=function(ev){jid=ev.pointerId;joy.setPointerCapture(ev.pointerId);moverJ(ev);};
+joy.onpointermove=function(ev){if(ev.pointerId===jid)moverJ(ev);};
+joy.onpointerup=soltarJ;joy.onpointercancel=soltarJ;
+$('bPular').onpointerdown=function(){if(eu)pular(eu);};
+$('bAgachar').onpointerdown=function(){agach=true;};
+$('bAgachar').onpointerup=function(){agach=false;};
+$('bAgachar').onpointercancel=function(){agach=false;};
+window.addEventListener('keydown',function(ev){keys[ev.key]=true;if(ev.key===' '&&eu)pular(eu);});
+window.addEventListener('keyup',function(ev){keys[ev.key]=false;});
+window.addEventListener('resize',function(){W=innerWidth;H=innerHeight;});
+
+var saltou=false;
+function iniciarAviao(){
+  parar();
+  var seg=20;saltou=false;
+  var pl=$('plane');
+  pl.style.animation='none';void pl.offsetWidth;pl.style.animation='';
+  $('tAviao').textContent='Salte quando quiser! '+seg+'s';
+  mostrar(aviao);
+  timerA=setInterval(function(){
+    seg--;
+    $('tAviao').textContent='Salte quando quiser! '+seg+'s';
+    if(seg<=0)saltar();
+  },1000);
+}
+function saltar(){
+  if(saltou)return;
+  saltou=true;
+  parar();
+  aviso('Em breve: a queda livre!');
+  setTimeout(irLobby,1800);
+}
+$('saltar').onpointerdown=saltar;
+$('saltar').onclick=saltar;
+
+function telaCheia(){
+  var d=document.documentElement;
+  var f=d.requestFullscreen||d.webkitRequestFullscreen;
+  if(!f)return;
+  try{
+    var r=f.call(d);
+    if(r&&r.then)r.then(function(){
+      try{screen.orientation.lock('landscape');}catch(e){}
+    }).catch(function(){});
+  }catch(e){}
+}
+document.addEventListener('pointerup',function(){
+  if(!document.fullscreenElement)telaCheia();
+});
+</script>
+</body>
+</html>
