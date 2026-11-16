@@ -24,35 +24,42 @@ html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:Arial
 button{padding:14px 56px;font-size:clamp(18px,3.5vw,26px);font-weight:bold;border:none;border-radius:10px;background:#ffb300;color:#222;box-shadow:0 5px 0 #a66f00}
 button:active{transform:translateY(4px);box-shadow:0 1px 0 #a66f00}
 button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shadow:none;border:1px solid #fff6}
-.caixa{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#000c;padding:22px 28px;border-radius:14px;display:flex;flex-direction:column;gap:12px;align-items:center;min-width:280px}
+.caixa{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#000c;padding:22px 28px;border-radius:14px;display:flex;flex-direction:column;gap:12px;align-items:center;min-width:280px;max-height:85vh;overflow-y:auto}
 .caixa h2{margin:0;color:#ffb300;letter-spacing:2px;font-size:clamp(18px,3.5vw,24px);text-align:center}
 #inpNome{width:100%;box-sizing:border-box;padding:12px;font-size:20px;border-radius:8px;border:2px solid #ffb300;background:#111;color:#fff;text-align:center}
 #erro{color:#ff8a80;font-size:14px;height:16px}
 .cards{display:flex;gap:18px}
-.card{width:150px;padding:14px 8px 12px;background:#111c;border:3px solid #fff4;border-radius:14px;text-align:center;font-weight:bold;letter-spacing:1px}
+.card{width:150px;padding:14px 8px 12px;background:#111c;border:3px solid #fff4;border-radius:14px;text-align:center;font-weight:bold;letter-spacing:1px;cursor:pointer;transition:border 0.2s}
 .card:active{border-color:#ffb300}
 .card svg{width:80px;height:80px;display:block;margin:0 auto 8px}
 
 /* LOBBY */
-.moedas{position:absolute;top:3%;right:2.5%;display:flex;gap:8px;align-items:center}
+.moedas{position:absolute;top:3%;right:2.5%;display:flex;gap:8px;align-items:center;z-index:2}
 .pilula{background:#000b;border:1px solid #fff4;border-radius:20px;padding:5px 12px;font-weight:bold;font-size:clamp(13px,2.6vw,17px)}
-#avatar{width:clamp(38px,7vw,48px);height:clamp(38px,7vw,48px);padding:0;border-radius:50%;font-size:20px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:none}
-.lateral{position:absolute;left:2%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px}
-.lat{width:clamp(62px,10vw,84px);padding:8px 4px;background:#000b;border:1px solid #fff4;border-radius:12px;text-align:center;font-size:clamp(10px,2vw,12px);font-weight:bold}
+#avatar{width:clamp(38px,7vw,48px);height:clamp(38px,7vw,48px);padding:0;border-radius:50%;font-size:20px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:none;cursor:pointer;background:#ffb300;color:#222}
+.personagem-centro{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);text-align:center}
+.pers-nome{font-size:clamp(26px,6vw,48px);font-weight:bold;color:#ffb300;text-shadow:0 3px 8px #000;letter-spacing:2px}
+.pers-tipo{font-size:clamp(14px,3vw,18px);color:#fff8;margin-top:8px}
+.lateral{position:absolute;left:2%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:2}
+.lat{width:clamp(62px,10vw,84px);padding:8px 4px;background:#000b;border:1px solid #fff4;border-radius:12px;text-align:center;font-size:clamp(10px,2vw,12px);font-weight:bold;cursor:pointer;transition:border 0.2s}
 .lat span{display:block;font-size:clamp(18px,4vw,24px);margin-bottom:2px}
 .lat:active{border-color:#ffb300}
-.direita{position:absolute;right:2.5%;bottom:5%;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.direita{position:absolute;right:2.5%;bottom:5%;display:flex;flex-direction:column;align-items:flex-end;gap:10px;z-index:2}
 .modos{display:flex;gap:8px}
-.modo{background:#000b;border:2px solid #fff4;border-radius:10px;padding:8px 14px;font-weight:bold;font-size:clamp(12px,2.6vw,16px)}
-.modo.ativo{border-color:#ffb300;color:#ffb300}
-.modo.bloq{opacity:.6}
-#iniciar{padding:12px 44px;font-size:clamp(16px,3.2vw,22px)}
+.modo{background:#000b;border:2px solid #fff4;border-radius:10px;padding:8px 14px;font-weight:bold;font-size:clamp(12px,2.6vw,16px);cursor:pointer;transition:all 0.2s}
+.modo.ativo{border-color:#ffb300;color:#ffb300;background:#0003}
+.modo.bloq{opacity:.6;cursor:not-allowed}
+#iniciar{padding:12px 44px;font-size:clamp(16px,3.2vw,22px);cursor:pointer}
 #toast{position:fixed;left:50%;top:14%;transform:translateX(-50%);background:#000d;border:1px solid #ffb300;padding:8px 18px;border-radius:20px;font-size:14px;display:none;z-index:6}
-#perfil{position:fixed;inset:0;background:#000b;display:none;z-index:5}
+#perfil{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;z-index:5}
 .av-grande{width:70px;height:70px;border-radius:50%;background:#ffb300;color:#222;font-size:34px;font-weight:bold;display:flex;align-items:center;justify-content:center}
-#pNome{font-size:22px;font-weight:bold}
-#pTipo,#pNivel{font-size:14px;color:#ffe082}
-.linha{display:flex;gap:10px}
+#pNome{font-size:22px;font-weight:bold;color:#ffb300}
+#pTipo,#pNivel,#pId{font-size:14px;color:#ffe082}
+.separador{width:100%;height:1px;background:#fff2;margin:12px 0}
+.hist-box{width:100%;background:#0008;border-radius:8px;padding:10px;margin-top:4px}
+.hist-titulo{font-size:15px;font-weight:bold;color:#ffb300;margin-bottom:6px}
+.hist-vazio{font-size:13px;color:#fff6;font-style:italic;text-align:center;padding:8px}
+.linha{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 #girar{position:fixed;inset:0;background:#000;display:none;align-items:center;justify-content:center;text-align:center;font-size:20px;z-index:9;padding:20px}
 @media (orientation:portrait){#girar{display:flex}}
 </style>
@@ -74,7 +81,7 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
   <div class="escura"></div>
   <div class="caixa">
     <h2>ESCOLHA SEU NOME</h2>
-    <input id="inpNome" type="text" maxlength="12" placeholder="Seu nome" autocomplete="off">
+    <input id="inpNome" type="text" maxlength="12" placeholder="Seu nome de jogador" autocomplete="off">
     <div id="erro"></div>
     <button id="confirmar">CONFIRMAR</button>
   </div>
@@ -87,11 +94,11 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
     <div class="cards">
       <div class="card" id="masc">
         <svg viewBox="0 0 80 80"><circle cx="40" cy="44" r="18" fill="#e0b48a"/><path d="M20 40 Q40 6 60 40 L60 34 Q40 0 20 34 Z" fill="#4a5a2a"/><rect x="26" y="38" width="28" height="9" rx="4" fill="#111"/><rect x="14" y="62" width="52" height="18" rx="8" fill="#556b2f"/></svg>
-        MASCULINO
+        DARIO
       </div>
       <div class="card" id="fem">
         <svg viewBox="0 0 80 80"><path d="M56 44 Q74 48 66 70 Q60 58 54 54 Z" fill="#6b4a2b"/><circle cx="40" cy="44" r="18" fill="#e0b48a"/><path d="M20 40 Q40 6 60 40 L60 34 Q40 0 20 34 Z" fill="#4a5a2a"/><rect x="26" y="38" width="28" height="9" rx="4" fill="#111"/><rect x="14" y="62" width="52" height="18" rx="8" fill="#556b2f"/></svg>
-        FEMININO
+        LARA
       </div>
     </div>
   </div>
@@ -99,6 +106,11 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
 
 <div id="lobby" class="tela">
   <div class="sombra"></div>
+
+  <div class="personagem-centro">
+    <div class="pers-nome" id="nomePersonagem"></div>
+    <div class="pers-tipo" id="tipoPersonagem"></div>
+  </div>
 
   <div class="moedas">
     <div class="pilula">💎 <span id="diamantes">0</span></div>
@@ -126,7 +138,12 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
     <div class="av-grande" id="pAv">?</div>
     <div id="pNome"></div>
     <div id="pTipo"></div>
-    <div id="pNivel">Nível 1</div>
+    <div id="pId">ID: —</div>
+    <div class="separador"></div>
+    <div class="hist-box">
+      <div class="hist-titulo">📋 Histórico de Partidas</div>
+      <div class="hist-vazio" id="historicoLista">Nenhuma partida jogada ainda</div>
+    </div>
     <div class="linha">
       <button id="trocar" class="peq">TROCAR NOME</button>
       <button id="fechar" class="peq">FECHAR</button>
@@ -142,6 +159,23 @@ var barra=$('barra'),txt=$('txt'),pct=$('pct'),comecar=$('comecar'),carga=$('car
     abertura=$('abertura'),telaNome=$('nome'),telaPers=$('pers'),lobby=$('lobby'),
     inp=$('inpNome'),erro=$('erro'),toast=$('toast'),perfil=$('perfil');
 
+var FUNDO_A='Screenshot_20261115-153556_Fotos~2.jpg';
+var FUNDO_L='Screenshot_20261115-133440_Dola.png';
+
+// GERAR ID ÚNICO (8 dígitos)
+function gerarId(){
+  return Math.floor(10000000 + Math.random() * 90000000).toString();
+}
+function obterId(){
+  var id=localStorage.getItem('sf_id');
+  if(!id){
+    id=gerarId();
+    localStorage.setItem('sf_id',id);
+  }
+  return id;
+}
+var meuId=obterId();
+
 function mostrar(t){
   abertura.style.display='none';telaNome.style.display='none';
   telaPers.style.display='none';lobby.style.display='none';
@@ -153,8 +187,6 @@ function aviso(m){
   clearTimeout(tt);tt=setTimeout(function(){toast.style.display='none';},1800);
 }
 
-var FUNDO_A='Screenshot_20261115-153556_Fotos~2.jpg';
-var FUNDO_L='Screenshot_20261115-133440_Dola.png';
 var pronto=0,total=2;
 function ok(){pronto++;}
 [FUNDO_A,FUNDO_L].forEach(function(u){
@@ -174,7 +206,7 @@ var t=setInterval(function(){
   pct.textContent=Math.floor(p)+'%';
 },100);
 
-var salvo='',genero='';
+var salvo='',genero='',nomePersonagem='';
 try{salvo=localStorage.getItem('sf_nome')||'';genero=localStorage.getItem('sf_genero')||'';}catch(e){}
 
 function atualizarPerfil(){
@@ -182,7 +214,12 @@ function atualizarPerfil(){
   $('avatar').textContent=ini;
   $('pAv').textContent=ini;
   $('pNome').textContent=salvo;
-  $('pTipo').textContent='Personagem '+(genero==='fem'?'feminino':'masculino');
+  nomePersonagem=(genero==='fem'?'Lara':'Dario');
+  $('pTipo').textContent='Personagem: '+nomePersonagem;
+  $('pId').textContent='ID: '+meuId;
+  // Atualiza nome no centro do lobby
+  $('nomePersonagem').textContent=nomePersonagem;
+  $('tipoPersonagem').textContent='Jogador: '+salvo;
 }
 
 comecar.onclick=function(){inp.value=salvo;mostrar(telaNome);};
@@ -216,6 +253,13 @@ for(var i=0;i<lats.length;i++){
 $('mClassico').onclick=function(){aviso('Modo Clássico selecionado');};
 $('mRank').onclick=function(){aviso('Ranqueado: em breve');};
 $('iniciar').onclick=function(){aviso('Em breve: a partida!');};
+
+// Se já tinha escolhido, vai direto pro lobby
+if(salvo&&genero){
+  comecar.style.display='none';
+  atualizarPerfil();
+  mostrar(lobby);
+}
 </script>
 </body>
 </html>
