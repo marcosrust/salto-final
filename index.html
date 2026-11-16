@@ -10,7 +10,7 @@ html,body{height:100%;background:#000;color:#fff;overflow:hidden}
 
 .tela{position:fixed;inset:0;background:#000 center/cover no-repeat;display:none;flex-direction:column;align-items:center;justify-content:center}
 .ativa{display:flex}
-.sombra{position:absolute;inset:0;background:rgba(0,0,0,0.3);z-index:1}
+.sombra{position:absolute;inset:0;background:rgba(0,0,0,0.4);z-index:1}
 .conteudo{position:relative;z-index:2;width:100%;height:100%}
 
 /* 🖼️ FUNDOS CORRETOS */
@@ -45,7 +45,7 @@ html,body{height:100%;background:#000;color:#fff;overflow:hidden}
 .card span{display:block;font-size:16px;font-weight:bold;color:#ffc107;text-align:center}
 .botao-centro{margin-top:10px;text-align:center}
 
-/* 🏙️ LOBBY — Layout completo, NADA mudou daqui pra baixo */
+/* 🏙️ LOBBY */
 .menu-esquerdo{
   position:absolute;
   left:18px;
@@ -311,7 +311,7 @@ html,body{height:100%;background:#000;color:#fff;overflow:hidden}
       <div class="item-menu">🛒 LOJA</div>
       <div class="item-menu">🎫 PASSE</div>
       <div class="item-menu">🎒 INVENTÁRIO</div>
-      <div class="item-menu">🏅 RANKING</div>
+      <div class="item-menu">🏆 RANKING</div>
     </div>
 
     <div class="canto-superior-direito">
@@ -331,8 +331,8 @@ html,body{height:100%;background:#000;color:#fff;overflow:hidden}
 
     <div class="caixa-inferior-direita">
       <div class="modos">
-        <div class="modo ativo">CLÁSSICO</div>
-        <div class="modo">RANQUEADO</div>
+        <div class="modo ativo" id="btn-classico">CLÁSSICO</div>
+        <div class="modo" id="btn-ranqueado">RANQUEADO</div>
       </div>
       <button class="btn">INICIAR PARTIDA</button>
     </div>
@@ -344,34 +344,22 @@ html,body{height:100%;background:#000;color:#fff;overflow:hidden}
   <div class="janela-config">
     <h2>⚙️ CONFIGURAÇÕES</h2>
     <div class="opcao-config">
-      <span>🎵 Som do Jogo</span>
-      <div class="toggle ativo" data-opcao="som"></div>
+      <span>Som do Jogo</span>
+      <div class="toggle ativo" id="toggle-som"></div>
     </div>
     <div class="opcao-config">
-      <span>🎶 Música</span>
-      <div class="toggle ativo" data-opcao="musica"></div>
+      <span>Música</span>
+      <div class="toggle ativo" id="toggle-musica"></div>
     </div>
     <div class="opcao-config">
-      <span>📳 Vibração</span>
-      <div class="toggle" data-opcao="vibracao"></div>
+      <span>Vibração</span>
+      <div class="toggle" id="toggle-vibracao"></div>
     </div>
     <div class="opcao-config">
-      <span>🎯 Mostrar FPS</span>
-      <div class="toggle" data-opcao="fps"></div>
+      <span>Mostrar FPS</span>
+      <div class="toggle" id="toggle-fps"></div>
     </div>
-    <div class="opcao-config">
-      <span>🗺️ HUD Simplificado</span>
-      <div class="toggle" data-opcao="hud"></div>
-    </div>
-    <div class="opcao-config">
-      <span>🖱️ Sensibilidade</span>
-      <span>Padrão</span>
-    </div>
-    <div class="opcao-config">
-      <span>📱 Controles</span>
-      <span>Toque</span>
-    </div>
-    <button class="btn-fechar" id="fechar-config">FECHAR</button>
+    <button class="btn-fechar" id="btn-fechar-config">FECHAR</button>
   </div>
 </div>
 
@@ -379,6 +367,7 @@ html,body{height:100%;background:#000;color:#fff;overflow:hidden}
 let nomeDoJogador = localStorage.getItem('saltoFinal_nome') || '';
 let personagemEscolhido = localStorage.getItem('saltoFinal_pers') || '';
 let imagemPersonagem = localStorage.getItem('saltoFinal_img') || '';
+let modoJogo = 'classico';
 
 function mostrarTela(idTela){
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
@@ -401,7 +390,6 @@ const barraInterval = setInterval(()=>{
 }, 180);
 
 document.getElementById('btn-avancar').onclick = () => {
-  // ✅ Se já tem nome e personagem → vai direto pro Lobby
   if(nomeDoJogador && personagemEscolhido && imagemPersonagem){
     preencherLobby();
     mostrarTela('tela-lobby');
@@ -454,15 +442,33 @@ function preencherLobby(){
 }
 
 // ⚙️ Janela de Configurações
+const janelaConfig = document.getElementById('janela-config');
 document.getElementById('botao-config').onclick = () => {
-  document.getElementById('janela-config').classList.add('abrir');
+  janelaConfig.classList.add('abrir');
 };
-document.getElementById('fechar-config').onclick = () => {
-  document.getElementById('janela-config').classList.remove('abrir');
+document.getElementById('btn-fechar-config').onclick = () => {
+  janelaConfig.classList.remove('abrir');
 };
-document.querySelectorAll('.toggle').forEach(t => {
-  t.onclick = () => t.classList.toggle('ativo');
+janelaConfig.onclick = (e) => {
+  if(e.target === janelaConfig) janelaConfig.classList.remove('abrir');
+};
+
+// Alternar toggles
+document.querySelectorAll('.toggle').forEach(toggle=>{
+  toggle.onclick = ()=> toggle.classList.toggle('ativo');
 });
+
+// Modos de jogo
+document.getElementById('btn-classico').onclick = ()=>{
+  modoJogo = 'classico';
+  document.getElementById('btn-classico').classList.add('ativo');
+  document.getElementById('btn-ranqueado').classList.remove('ativo');
+};
+document.getElementById('btn-ranqueado').onclick = ()=>{
+  modoJogo = 'ranqueado';
+  document.getElementById('btn-ranqueado').classList.add('ativo');
+  document.getElementById('btn-classico').classList.remove('ativo');
+};
 </script>
 
 </body>
