@@ -1,147 +1,113 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Salto Final</title>
 <style>
-:root{
-  --fundo-abertura:url("Screenshot_20261115-133440_Dola~2.jpg");
-  --fundo-lobby:url("Screenshot_20261115-161520_Dola~2.jpg");
-}
-html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:Arial,sans-serif;color:#fff;user-select:none;-webkit-user-select:none}
-.tela{position:fixed;inset:0;background:#000 center/cover no-repeat;display:none}
-#tela-carregamento{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:15vh;background-image:var(--fundo-abertura)}
-#tela-nome,#tela-personagem{background-image:var(--fundo-abertura);display:flex;flex-direction:column;align-items:center;justify-content:center}
-#tela-lobby{background-image:var(--fundo-lobby)}
-.sombra{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0) 50%)}
-.txt-carregando{font-size:clamp(18px,5vw,24px);margin-bottom:20px;text-shadow:0 2px 4px #000}
-.barra-fundo{width:min(70%,400px);height:14px;border-radius:7px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.3);overflow:hidden;margin-bottom:10px}
-.barra-progresso{width:0;height:100%;background:linear-gradient(90deg,#ff6f00,#ffc107);transition:width 0.1s linear}
-.porcentagem{font-size:clamp(14px,4vw,18px);color:#ffd700;text-shadow:0 1px 3px #000;margin-bottom:30px}
-.btn{padding:14px 48px;font-size:clamp(18px,5vw,24px);font-weight:bold;border:none;border-radius:10px;background:#ffc107;color:#000;text-shadow:none;cursor:pointer;box-shadow:0 5px 0 #cc9a00;transition:all 0.1s}
-.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #cc9a00}
-.caixa{background:rgba(0,0,0,0.6);padding:24px 28px;border-radius:14px;text-align:center;max-width:min(85%,340px)}
-.caixa h2{color:#ffc107;margin-top:0;margin-bottom:16px;font-size:clamp(20px,5vw,26px)}
-.campo-nome{width:100%;padding:12px;font-size:18px;border-radius:8px;border:2px solid #ffc107;background:rgba(0,0,0,0.5);color:#fff;text-align:center;margin-bottom:12px;box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+html,body{height:100%;overflow:hidden;background:#000;color:#fff}
+.tela{position:fixed;inset:0;background:#000 center/cover no-repeat;display:none;flex-direction:column;align-items:center;justify-content:center}
+#tela-carregamento{display:flex;justify-content:flex-end;padding-bottom:15vh;background-image:url("Screenshot_20261115-133440_Dola~2.jpg")}
+.sombra{position:absolute;inset:0;background:rgba(0,0,0,0.5)}
+.conteudo{position:relative;z-index:1;text-align:center;width:100%;padding:20px}
+.txt-carregando{font-size:22px;margin-bottom:20px;text-shadow:0 2px 4px #000}
+.barra-fundo{width:300px;height:14px;border-radius:7px;background:rgba(0,0,0,0.5);border:2px solid #fff3;margin:0 auto 10px}
+.barra-progresso{width:0;height:100%;background:linear-gradient(90deg,#ff6f00,#ffc107);transition:width 0.1s}
+.porcentagem{font-size:16px;color:#ffc107;margin-bottom:30px}
+.btn{padding:12px 40px;font-size:20px;font-weight:bold;border:none;border-radius:8px;background:#ffc107;color:#000;cursor:pointer;box-shadow:0 4px 0 #b38600}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #b38600}
+.caixa{background:rgba(0,0,0,0.7);padding:30px;border-radius:12px;text-align:center;max-width:340px;width:90%}
+.caixa h2{color:#ffc107;margin-bottom:20px;font-size:22px}
+.campo-nome{width:100%;padding:12px;font-size:18px;border:2px solid #ffc107;border-radius:6px;background:rgba(0,0,0,0.5);color:#fff;text-align:center;margin-bottom:10px}
 .erro{color:#ff6b6b;font-size:14px;height:20px;margin-bottom:10px}
-.personagens{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.card-personagem{background:rgba(30,30,30,0.6);border:2px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px;cursor:pointer;transition:border 0.2s;text-align:center;width:140px}
-.card-personagem:hover,.card-personagem.selecionado{border-color:#ffc107}
-.card-personagem img{width:100%;height:140px;object-fit:contain;margin-bottom:8px;border-radius:6px}
-.card-personagem span{font-size:18px;font-weight:bold;color:#ffc107}
-
-/* Lobby */
-.painel-superior{position:absolute;top:16px;right:16px;display:flex;gap:12px;align-items:center;z-index:10}
-.moeda{background:rgba(0,0,0,0.6);border-radius:20px;padding:6px 12px;display:flex;align-items:center;gap:6px;font-weight:bold}
-.avatar{width:44px;height:44px;border-radius:50%;background:#ffc107;color:#000;font-weight:bold;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #fff}
-.area-personagem{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);text-align:center;z-index:5}
-.img-personagem{max-width:min(280px,70vw);max-height:55vh;object-fit:contain}
-.nome-jogador{color:#fff;font-size:clamp(14px,3.5vw,18px);margin-top:8px;text-shadow:0 2px 4px #000}
-.menu-lateral{position:absolute;left:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:10}
-.item-menu{background:rgba(0,0,0,0.5);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer;border:1px solid rgba(255,255,255,0.1);transition:all 0.2s;color:#fff;text-decoration:none}
-.item-menu:hover{border-color:#ffc107;background:rgba(0,0,0,0.7)}
-.item-menu span{font-size:14px}
-.area-iniciar{position:absolute;right:32px;bottom:10vh;text-align:right;z-index:10}
-.modos{display:flex;gap:8px;margin-bottom:16px;justify-content:flex-end}
-.modo{padding:8px 20px;border-radius:6px;font-weight:bold;border:2px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.4);color:#fff;cursor:pointer}
-.modo.ativo{border-color:#ffc107;background:rgba(255,107,0,0.3);color:#ffc107}
-.btn-iniciar{font-size:clamp(18px,5vw,26px);padding:16px 40px}
-
-/* Perfil */
-.overlay-perfil{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:100}
-.caixa-perfil{background:rgba(20,20,20,0.95);border:2px solid #ffc107;border-radius:14px;padding:24px;max-width:min(85%,320px);text-align:center}
-.caixa-perfil h2{color:#ffc107;margin-top:0}
-.linha{height:1px;background:rgba(255,255,255,0.2);margin:12px 0}
-.estatistica{margin:8px 0}
-.estatistica label{color:#aaa;font-size:14px}
-.estatistica span{color:#ffc107;font-weight:bold;font-size:16px}
-.botoes-perfil{display:flex;gap:10px;justify-content:center;margin-top:16px}
-.btn-pequeno{padding:8px 16px;font-size:14px}
+.personagens{display:flex;gap:20px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.card{background:#1a1a1a;border:3px solid #444;border-radius:10px;padding:15px;cursor:pointer;transition:border 0.2s;width:150px}
+.card.selecionado{border-color:#ffc107;background:#2a2a2a}
+.card img{width:100%;height:150px;object-fit:cover;border-radius:6px;margin-bottom:10px}
+.card span{display:block;font-size:18px;font-weight:bold;color:#ffc107}
+#tela-lobby{background-image:url("Screenshot_20261115-161520_Dola~2.jpg")}
+.personagem-centro{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);text-align:center}
+.personagem-centro img{max-width:250px;max-height:400px}
+.nome-jogador{margin-top:10px;font-size:18px;color:#fff;text-shadow:0 2px 4px #000}
+.canto-superior{position:absolute;top:20px;right:20px;display:flex;gap:10px;align-items:center}
+.moeda{background:rgba(0,0,0,0.6);border-radius:20px;padding:6px 12px;font-weight:bold}
+.avatar{width:40px;height:40px;border-radius:50%;background:#ffc107;color:#000;font-weight:bold;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #fff}
+.lado-esquerdo{position:absolute;left:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px}
+.item-lado{background:rgba(0,0,0,0.5);border-radius:8px;padding:10px 15px;text-align:center;cursor:pointer;border:1px solid #fff2;color:#fff}
+.lado-inferior{position:absolute;right:30px;bottom:40px;text-align:right}
+.modos{display:flex;gap:8px;margin-bottom:15px;justify-content:flex-end}
+.modo{padding:8px 18px;border-radius:6px;border:2px solid #fff3;background:rgba(0,0,0,0.4);color:#fff;font-weight:bold}
+.modo.ativo{border-color:#ffc107;color:#ffc107}
+.escondido{display:none !important}
 </style>
 </head>
 <body>
 
-<!-- TELA 1: Carregamento -->
+<!-- CARREGAMENTO -->
 <div id="tela-carregamento" class="tela">
   <div class="sombra"></div>
-  <div class="txt-carregando">CARREGANDO PARTIDA...</div>
-  <div class="barra-fundo"><div id="barra" class="barra-progresso"></div></div>
-  <div class="porcentagem" id="porcentagem">0%</div>
-  <button id="btn-iniciar-jogo" class="btn" style="display:none">INICIAR JOGO</button>
-</div>
-
-<!-- TELA 2: Digitar Nome -->
-<div id="tela-nome" class="tela">
-  <div class="sombra"></div>
-  <div class="caixa">
-    <h2>QUAL É O SEU NOME?</h2>
-    <input type="text" id="campo-nome" class="campo-nome" placeholder="Digite seu nome de jogador" maxlength="12">
-    <div class="erro" id="erro-nome"></div>
-    <button id="btn-confirmar-nome" class="btn">CONFIRMAR</button>
+  <div class="conteudo">
+    <div class="txt-carregando">CARREGANDO PARTIDA...</div>
+    <div class="barra-fundo"><div id="barra" class="barra-progresso"></div></div>
+    <div class="porcentagem" id="pct">0%</div>
+    <button id="btn-iniciar" class="btn escondido">INICIAR JOGO</button>
   </div>
 </div>
 
-<!-- TELA 3: Escolher Personagem -->
+<!-- NOME -->
+<div id="tela-nome" class="tela">
+  <div class="sombra"></div>
+  <div class="caixa">
+    <h2>SEU NOME</h2>
+    <input type="text" id="nome-input" class="campo-nome" placeholder="Digite seu nome" maxlength="12">
+    <div class="erro" id="nome-erro"></div>
+    <button id="btn-nome" class="btn">CONFIRMAR</button>
+  </div>
+</div>
+
+<!-- PERSONAGEM -->
 <div id="tela-personagem" class="tela">
   <div class="sombra"></div>
   <div class="caixa">
     <h2>ESCOLHA SEU PERSONAGEM</h2>
     <div class="personagens">
-      <div class="card-personagem" data-personagem="dario">
-        <img src="Screenshot_20261116-105650_Dola~2.jpg" alt="Dario">
+      <div class="card" data-pers="dario">
+        <img src="Screenshot_20261116-105650_Dola~2.jpg" alt="Dario" onerror="this.src='#'">
         <span>DARIO</span>
       </div>
-      <div class="card-personagem" data-personagem="lara">
-        <img src="Screenshot_20261116-105716_Dola~2.jpg" alt="Lara">
+      <div class="card" data-pers="lara">
+        <img src="Screenshot_20261116-105716_Dola~2.jpg" alt="Lara" onerror="this.src='#'">
         <span>LARA</span>
       </div>
     </div>
+    <button id="btn-pers" class="btn escondido">CONFIRMAR</button>
   </div>
 </div>
 
-<!-- TELA 4: Lobby -->
+<!-- LOBBY -->
 <div id="tela-lobby" class="tela">
   <div class="sombra"></div>
-
-  <div class="painel-superior">
+  <div class="canto-superior">
     <div class="moeda">💎 0</div>
     <div class="moeda">🪙 0</div>
     <div class="avatar" id="botao-perfil">S</div>
   </div>
-
-  <div class="area-personagem">
-    <img id="imagem-personagem" class="img-personagem" src="" alt="">
-    <div class="nome-jogador" id="texto-jogador"></div>
+  <div class="personagem-centro">
+    <img id="img-pers" src="" alt="">
+    <div class="nome-jogador" id="nome-jogador"></div>
   </div>
-
-  <div class="menu-lateral">
-    <div class="item-menu"><span>🛒</span>LOJA</div>
-    <div class="item-menu"><span>🎫</span>PASSE</div>
-    <div class="item-menu"><span>🎒</span>INVENTÁRIO</div>
+  <div class="lado-esquerdo">
+    <div class="item-lado">🛒 LOJA</div>
+    <div class="item-lado">🎫 PASSE</div>
+    <div class="item-lado">🎒 INVENTÁRIO</div>
   </div>
-
-  <div class="area-iniciar">
+  <div class="lado-inferior">
     <div class="modos">
       <div class="modo ativo">CLÁSSICO</div>
       <div class="modo">RANQUEADO</div>
     </div>
-    <button class="btn btn-iniciar">INICIAR PARTIDA</button>
-  </div>
-</div>
-
-<!-- PERFIL -->
-<div id="tela-perfil" class="overlay-perfil">
-  <div class="caixa-perfil">
-    <h2 id="perfil-nome"></h2>
-    <div class="linha"></div>
-    <div class="estatistica"><label>PERSONAGEM:</label> <span id="perfil-personagem"></span></div>
-    <div class="estatistica"><label>ID:</label> <span id="perfil-id"></span></div>
-    <div class="linha"></div>
-    <div class="botoes-perfil">
-      <button class="btn btn-pequeno" id="btn-trocar-nome">TROCAR NOME</button>
-      <button class="btn btn-pequeno" id="btn-fechar-perfil">FECHAR</button>
-    </div>
+    <button class="btn">INICIAR PARTIDA</button>
   </div>
 </div>
 
@@ -149,127 +115,98 @@ html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:Arial
 // Elementos
 const telaCarreg = document.getElementById('tela-carregamento');
 const telaNome = document.getElementById('tela-nome');
-const telaPersonagem = document.getElementById('tela-personagem');
+const telaPers = document.getElementById('tela-personagem');
 const telaLobby = document.getElementById('tela-lobby');
-const telaPerfil = document.getElementById('tela-perfil');
 const barra = document.getElementById('barra');
-const porcentagem = document.getElementById('porcentagem');
-const btnIniciarJogo = document.getElementById('btn-iniciar-jogo');
-const campoNome = document.getElementById('campo-nome');
-const erroNome = document.getElementById('erro-nome');
-const btnConfirmarNome = document.getElementById('btn-confirmar-nome');
-const imagemPersonagem = document.getElementById('imagem-personagem');
-const textoJogador = document.getElementById('texto-jogador');
-const botaoPerfil = document.getElementById('botao-perfil');
-const perfilNome = document.getElementById('perfil-nome');
-const perfilPersonagem = document.getElementById('perfil-personagem');
-const perfilId = document.getElementById('perfil-id');
-const btnTrocarNome = document.getElementById('btn-trocar-nome');
-const btnFecharPerfil = document.getElementById('btn-fechar-perfil');
+const pct = document.getElementById('pct');
+const btnIniciar = document.getElementById('btn-iniciar');
+const nomeInput = document.getElementById('nome-input');
+const nomeErro = document.getElementById('nome-erro');
+const btnNome = document.getElementById('btn-nome');
+const cardsPers = document.querySelectorAll('.card');
+const btnPers = document.getElementById('btn-pers');
+const imgPers = document.getElementById('img-pers');
+const nomeJogador = document.getElementById('nome-jogador');
 
-// Dados do jogador
-let jogador = {
-  nome: localStorage.getItem('salto_nome') || '',
-  personagem: localStorage.getItem('salto_personagem') || '',
-  id: localStorage.getItem('salto_id') || ''
-};
-
-if(!jogador.id){
-  jogador.id = Math.floor(10000000 + Math.random() * 90000000).toString();
-  localStorage.setItem('salto_id', jogador.id);
-}
+// Dados salvos
+let nomeSalvo = localStorage.getItem('salto_nome') || '';
+let persSalvo = localStorage.getItem('salto_pers') || '';
+let persEscolhido = '';
 
 function mostrar(tela){
-  document.querySelectorAll('.tela').forEach(t => t.style.display = 'none');
-  tela.style.display = 'flex';
+  document.querySelectorAll('.tela').forEach(t=>t.style.display='none');
+  tela.style.display='flex';
 }
 
-// Animação de carregamento
-let p = 0;
-const carregar = setInterval(() => {
-  p += Math.random() * 12;
-  if(p >= 100){
-    p = 100;
+// Carregamento
+let prog=0;
+const carregar=setInterval(()=>{
+  prog+=Math.random()*10;
+  if(prog>=100){
+    prog=100;
     clearInterval(carregar);
-    porcentagem.textContent = 'PRONTO!';
-    btnIniciarJogo.style.display = 'block';
+    pct.textContent='PRONTO!';
+    btnIniciar.classList.remove('escondido');
   }else{
-    porcentagem.textContent = Math.floor(p) + '%';
+    pct.textContent=Math.floor(prog)+'%';
   }
-  barra.style.width = p + '%';
-}, 200);
+  barra.style.width=prog+'%';
+},150);
 
-// Botão INICIAR JOGO → decide pra onde ir
-btnIniciarJogo.addEventListener('click', () => {
-  if(jogador.nome && jogador.personagem){
-    mostrarLobby();
-  }else if(!jogador.nome){
+// Botão INICIAR JOGO
+btnIniciar.onclick=()=>{
+  if(nomeSalvo && persSalvo){
+    carregarLobby();
+  }else if(!nomeSalvo){
     mostrar(telaNome);
-    campoNome.value = '';
-    erroNome.textContent = '';
+    nomeInput.value='';
+    nomeErro.textContent='';
   }else{
-    mostrar(telaPersonagem);
+    mostrar(telaPers);
   }
-});
+};
 
 // Confirmar nome
-btnConfirmarNome.addEventListener('click', () => {
-  const nome = campoNome.value.trim();
-  if(nome.length < 2){
-    erroNome.textContent = 'Digite um nome com pelo menos 2 letras';
+btnNome.onclick=()=>{
+  const n=nomeInput.value.trim();
+  if(n.length<2){
+    nomeErro.textContent='Mínimo 2 letras';
     return;
   }
-  jogador.nome = nome;
-  localStorage.setItem('salto_nome', nome);
-  mostrar(telaPersonagem);
-});
+  nomeSalvo=n;
+  localStorage.setItem('salto_nome',n);
+  mostrar(telaPers);
+};
 
 // Escolher personagem
-document.querySelectorAll('.card-personagem').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.card-personagem').forEach(c => c.classList.remove('selecionado'));
+cardsPers.forEach(card=>{
+  card.onclick=()=>{
+    cardsPers.forEach(c=>c.classList.remove('selecionado'));
     card.classList.add('selecionado');
-    jogador.personagem = card.dataset.personagem;
-    localStorage.setItem('salto_personagem', jogador.personagem);
-    mostrarLobby();
-  });
+    persEscolhido=card.dataset.pers;
+    btnPers.classList.remove('escondido');
+  };
 });
 
-// Mostrar Lobby com a imagem certa
-function mostrarLobby(){
-  const imgDario = 'Screenshot_20261116-105650_Dola~2.jpg';
-  const imgLara = 'Screenshot_20261116-105716_Dola~2.jpg';
-  
-  if(jogador.personagem === 'dario'){
-    imagemPersonagem.src = imgDario;
-  }else if(jogador.personagem === 'lara'){
-    imagemPersonagem.src = imgLara;
+// Confirmar personagem
+btnPers.onclick=()=>{
+  if(!persEscolhido)return;
+  persSalvo=persEscolhido;
+  localStorage.setItem('salto_pers',persEscolhido);
+  carregarLobby();
+};
+
+function carregarLobby(){
+  const imgDario='Screenshot_20261116-105650_Dola~2.jpg';
+  const imgLara='Screenshot_20261116-105716_Dola~2.jpg';
+  if(persSalvo==='dario'){
+    imgPers.src=imgDario;
+  }else if(persSalvo==='lara'){
+    imgPers.src=imgLara;
   }
-  textoJogador.textContent = 'Jogador: ' + jogador.nome;
+  nomeJogador.textContent='Jogador: '+nomeSalvo;
   mostrar(telaLobby);
 }
-
-// Perfil
-botaoPerfil.addEventListener('click', () => {
-  perfilNome.textContent = jogador.nome;
-  perfilPersonagem.textContent = jogador.personagem === 'dario' ? 'DARIO' : 'LARA';
-  perfilId.textContent = jogador.id;
-  telaPerfil.style.display = 'flex';
-});
-
-btnFecharPerfil.addEventListener('click', () => {
-  telaPerfil.style.display = 'none';
-});
-
-btnTrocarNome.addEventListener('click', () => {
-  telaPerfil.style.display = 'none';
-  jogador.nome = '';
-  localStorage.removeItem('salto_nome');
-  mostrar(telaNome);
-  campoNome.value = '';
-  erroNome.textContent = '';
-});
 </script>
-
 </body>
 </html>
