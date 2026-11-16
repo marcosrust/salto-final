@@ -7,343 +7,205 @@
 <title>Salto Final</title>
 
 <style>
-:root{
-  --fundo-abertura:url("Screenshot_20261115-153556_Fotos~2.jpg");
-  --fundo-lobby:url("Screenshot_20261115-133440_Dola.png");
-}
-
+*{box-sizing:border-box}
 html,body{
-  margin:0;
-  height:100%;
-  overflow:hidden;
-  background:#000;
-  font-family:Arial,sans-serif;
-  color:#fff;
+  margin:0;width:100%;height:100%;overflow:hidden;
+  background:#000;color:white;font-family:Arial,sans-serif;
   user-select:none;
-  -webkit-user-select:none;
 }
-
 .tela{
-  position:fixed;
-  inset:0;
+  position:fixed;inset:0;
   background:#000 center/cover no-repeat;
 }
-
 .sombra{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,#000c 0%,#0000 45%);
+  position:absolute;inset:0;
+  background:linear-gradient(to top,#000c,transparent 55%);
 }
-
-.escura{
-  position:absolute;
-  inset:0;
-  background:#000a;
-}
+.escura{position:absolute;inset:0;background:#000a}
 
 #abertura,#nome,#pers{
-  background-image:var(--fundo-abertura);
+  background-image:url("Screenshot_20261115-153556_Fotos~2.jpg");
 }
+#nome,#pers,#lobby,#carregando,#sala{display:none}
 
-#nome,#pers{display:none}
 #lobby{
-  display:none;
-  background-image:var(--fundo-lobby);
+  background-image:url("Screenshot_20261115-133440_Dola.png");
 }
 
-#abertura .base{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:6%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-}
-
-#txt{
-  font-weight:bold;
-  letter-spacing:2px;
-  font-size:clamp(14px,3vw,22px);
-  text-shadow:0 2px 6px #000;
-}
-
-#carga{
-  width:60%;
-  max-width:520px;
-  height:14px;
-  border-radius:10px;
-  background:#0008;
-  border:2px solid #fff8;
-  overflow:hidden;
-}
-
-#barra{
-  width:0;
-  height:100%;
-  background:linear-gradient(90deg,#ff6f00,#ffb300);
-}
-
-#pct{
-  font-size:clamp(12px,2.5vw,16px);
-  color:#ffe082;
-  text-shadow:0 2px 6px #000;
-}
+/* BOTÕES */
 
 button{
-  padding:14px 56px;
-  font-size:clamp(18px,3.5vw,26px);
-  font-weight:bold;
-  border:none;
-  border-radius:10px;
-  background:#ffb300;
-  color:#222;
+  padding:14px 30px;font-size:19px;font-weight:bold;
+  border:0;border-radius:10px;background:#ffb300;color:#222;
   box-shadow:0 5px 0 #a66f00;
 }
-
-button:active{
-  transform:translateY(4px);
-  box-shadow:0 1px 0 #a66f00;
-}
-
+button:active{transform:translateY(3px)}
 button.peq{
-  padding:8px 18px;
-  font-size:14px;
-  background:#000a;
-  color:#fff;
-  box-shadow:none;
+  padding:8px 14px;font-size:14px;
+  background:#000c;color:white;box-shadow:none;
   border:1px solid #fff6;
 }
 
+/* CARREGAMENTO INICIAL */
+
+.base{
+  position:absolute;bottom:6%;left:0;right:0;
+  display:flex;flex-direction:column;
+  align-items:center;gap:10px;
+}
+#txt{font-weight:bold;letter-spacing:2px}
+#carga{
+  width:60%;height:14px;border:2px solid #fff8;
+  border-radius:10px;overflow:hidden;background:#0008;
+}
+#barra{
+  width:0;height:100%;
+  background:linear-gradient(90deg,#ff6f00,#ffb300);
+}
+#pct{color:#ffe082}
+
+/* CAIXAS */
+
 .caixa{
-  position:absolute;
-  left:50%;
-  top:50%;
+  position:absolute;left:50%;top:50%;
   transform:translate(-50%,-50%);
-  background:#000c;
-  padding:22px 28px;
-  border-radius:14px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  align-items:center;
-  min-width:280px;
+  background:#000d;padding:22px;
+  border-radius:14px;display:flex;
+  flex-direction:column;gap:12px;
+  align-items:center;min-width:280px;
 }
-
-.caixa h2{
-  margin:0;
-  color:#ffb300;
-  letter-spacing:2px;
-  font-size:clamp(18px,3.5vw,24px);
-  text-align:center;
-}
-
+.caixa h2{margin:0;color:#ffb300;text-align:center}
 #inpNome{
-  width:100%;
-  box-sizing:border-box;
-  padding:12px;
-  font-size:20px;
-  border-radius:8px;
-  border:2px solid #ffb300;
-  background:#111;
-  color:#fff;
-  text-align:center;
+  width:100%;padding:12px;font-size:20px;
+  border-radius:8px;border:2px solid #ffb300;
+  background:#111;color:white;text-align:center;
 }
-
-#erro{
-  color:#ff8a80;
-  font-size:14px;
-  height:16px;
-}
-
-.cards{
-  display:flex;
-  gap:18px;
-}
-
+#erro{color:#ff8a80;font-size:14px}
+.cards{display:flex;gap:12px}
 .card{
-  width:150px;
-  padding:14px 8px 12px;
-  background:#111c;
-  border:3px solid #fff4;
-  border-radius:14px;
-  text-align:center;
-  font-weight:bold;
-  letter-spacing:1px;
+  width:130px;padding:12px 5px;
+  background:#111c;border:2px solid #fff5;
+  border-radius:12px;text-align:center;font-weight:bold;
 }
+.card svg{width:75px;height:75px;display:block;margin:auto}
 
-.card:active{border-color:#ffb300}
-
-.card svg{
-  width:80px;
-  height:80px;
-  display:block;
-  margin:0 auto 8px;
-}
-
-/* LOBBY */
+/* LOBBY PRINCIPAL */
 
 .moedas{
-  position:absolute;
-  top:3%;
-  right:2.5%;
-  display:flex;
-  gap:8px;
-  align-items:center;
+  position:absolute;top:3%;right:2.5%;
+  display:flex;gap:8px;align-items:center;
 }
-
 .pilula{
-  background:#000b;
-  border:1px solid #fff4;
-  border-radius:20px;
-  padding:5px 12px;
-  font-weight:bold;
-  font-size:clamp(13px,2.6vw,17px);
+  background:#000b;border:1px solid #fff4;
+  border-radius:20px;padding:7px 12px;font-weight:bold;
 }
-
 #avatar{
-  width:clamp(38px,7vw,48px);
-  height:clamp(38px,7vw,48px);
-  padding:0;
-  border-radius:50%;
-  font-size:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:2px solid #fff;
-  box-shadow:none;
+  width:42px;height:42px;padding:0;
+  border-radius:50%;display:flex;
+  align-items:center;justify-content:center;
 }
-
 .lateral{
-  position:absolute;
-  left:2%;
-  top:50%;
+  position:absolute;left:2%;top:50%;
   transform:translateY(-50%);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+  display:flex;flex-direction:column;gap:10px;
 }
-
 .lat{
-  width:clamp(62px,10vw,84px);
-  padding:8px 4px;
-  background:#000b;
-  border:1px solid #fff4;
-  border-radius:12px;
-  text-align:center;
-  font-size:clamp(10px,2vw,12px);
+  width:75px;padding:10px 4px;
+  background:#000b;border:1px solid #fff5;
+  border-radius:12px;text-align:center;font-size:11px;
   font-weight:bold;
 }
-
-.lat span{
-  display:block;
-  font-size:clamp(18px,4vw,24px);
-  margin-bottom:2px;
-}
-
-.lat:active{border-color:#ffb300}
-
+.lat span{display:block;font-size:22px}
 .direita{
-  position:absolute;
-  right:2.5%;
-  bottom:5%;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:10px;
+  position:absolute;right:2.5%;bottom:5%;
+  display:flex;flex-direction:column;
+  align-items:flex-end;gap:10px;
 }
-
-.modos{
-  display:flex;
-  gap:8px;
-}
-
+.modos{display:flex;gap:8px}
 .modo{
-  background:#000b;
-  border:2px solid #fff4;
-  border-radius:10px;
-  padding:8px 14px;
-  font-weight:bold;
-  font-size:clamp(12px,2.6vw,16px);
+  background:#000b;border:2px solid #fff5;
+  border-radius:10px;padding:9px 12px;font-weight:bold;
 }
-
-.modo.ativo{
-  border-color:#ffb300;
-  color:#ffb300;
-}
-
+.modo.ativo{border-color:#ffb300;color:#ffb300}
 .modo.bloq{opacity:.6}
+#iniciar{padding:13px 28px}
 
-#iniciar{
-  padding:12px 44px;
-  font-size:clamp(16px,3.2vw,22px);
+/* NOVA SALA DE ESPERA */
+
+#sala{
+  background-image:url("Screenshot_20261115-161520_Dola.png");
+  background-size:cover;
+  background-position:center;
+}
+
+.sala-escura{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,#0009,transparent 35%,#0008);
+  pointer-events:none;
+}
+
+.topo-sala{
+  position:absolute;top:3%;left:0;right:0;
+  display:flex;justify-content:space-between;
+  align-items:center;padding:0 3%;
+}
+
+.info-sala{
+  background:#000b;border:1px solid #fff5;
+  border-radius:10px;padding:10px 14px;
+  font-weight:bold;font-size:clamp(12px,2.5vw,18px);
+}
+
+#contador{
+  position:absolute;top:17%;left:50%;
+  transform:translateX(-50%);
+  background:#000c;border:2px solid #ffb300;
+  border-radius:14px;padding:12px 25px;
+  text-align:center;min-width:160px;
+}
+#tempo{
+  color:#ffca28;font-size:clamp(30px,6vw,48px);
+  font-weight:bold;
+}
+#mensagem-tempo{font-size:12px;letter-spacing:2px}
+
+#vagas{
+  position:absolute;bottom:5%;left:50%;
+  transform:translateX(-50%);
+  background:#000d;border:1px solid #ffb300;
+  border-radius:12px;padding:12px 24px;
+  font-weight:bold;font-size:clamp(14px,3vw,20px);
+  white-space:nowrap;
 }
 
 #toast{
-  position:fixed;
-  left:50%;
-  top:14%;
+  position:fixed;left:50%;top:14%;
   transform:translateX(-50%);
-  background:#000d;
-  border:1px solid #ffb300;
-  padding:8px 18px;
-  border-radius:20px;
-  font-size:14px;
-  display:none;
-  z-index:6;
+  background:#000d;border:1px solid #ffb300;
+  padding:10px 18px;border-radius:20px;
+  display:none;z-index:10;
 }
 
 #perfil{
-  position:fixed;
-  inset:0;
-  background:#000b;
-  display:none;
-  z-index:5;
+  position:fixed;inset:0;background:#000b;
+  display:none;z-index:8;
 }
-
 .av-grande{
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  background:#ffb300;
-  color:#222;
-  font-size:34px;
-  font-weight:bold;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  width:70px;height:70px;border-radius:50%;
+  background:#ffb300;color:#222;font-size:34px;
+  font-weight:bold;display:flex;
+  align-items:center;justify-content:center;
 }
-
-#pNome{
-  font-size:22px;
-  font-weight:bold;
-}
-
-#pTipo,#pNivel{
-  font-size:14px;
-  color:#ffe082;
-}
-
-.linha{
-  display:flex;
-  gap:10px;
-}
+#pNome{font-size:22px;font-weight:bold}
+#pTipo,#pNivel{font-size:14px;color:#ffe082}
+.linha{display:flex;gap:10px}
 
 #girar{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:20px;
-  z-index:9;
-  padding:20px;
+  position:fixed;inset:0;background:#000;
+  display:none;align-items:center;justify-content:center;
+  text-align:center;font-size:20px;z-index:20;
 }
-
-@media (orientation:portrait){
+@media(orientation:portrait){
   #girar{display:flex}
 }
 </style>
@@ -351,49 +213,28 @@ button.peq{
 
 <body>
 
-<div id="girar">
-  Gire o celular<br>
-  para o modo deitado
-</div>
+<div id="girar">Gire o celular<br>para o modo deitado</div>
 
-<!-- TELA DE CARREGAMENTO -->
+<!-- ABERTURA -->
 
 <div id="abertura" class="tela">
   <div class="sombra"></div>
-
   <div class="base">
     <div id="txt">CARREGANDO PARTIDA...</div>
-
-    <div id="carga">
-      <div id="barra"></div>
-    </div>
-
+    <div id="carga"><div id="barra"></div></div>
     <div id="pct">0%</div>
-
-    <button id="comecar" style="display:none">
-      COMEÇAR
-    </button>
+    <button id="comecar" style="display:none">COMEÇAR</button>
   </div>
 </div>
 
-<!-- TELA DO NOME -->
+<!-- NOME -->
 
 <div id="nome" class="tela">
   <div class="escura"></div>
-
   <div class="caixa">
     <h2>ESCOLHA SEU NOME</h2>
-
-    <input
-      id="inpNome"
-      type="text"
-      maxlength="12"
-      placeholder="Seu nome"
-      autocomplete="off"
-    >
-
+    <input id="inpNome" maxlength="12" placeholder="Seu nome">
     <div id="erro"></div>
-
     <button id="confirmar">CONFIRMAR</button>
   </div>
 </div>
@@ -402,33 +243,28 @@ button.peq{
 
 <div id="pers" class="tela">
   <div class="escura"></div>
-
   <div class="caixa">
     <h2>ESCOLHA SEU PERSONAGEM</h2>
-
     <div class="cards">
-
       <div class="card" id="masc">
         <svg viewBox="0 0 80 80">
           <circle cx="40" cy="44" r="18" fill="#e0b48a"/>
-          <path d="M20 40 Q40 6 60 40 L60 34 Q40 0 20 34 Z" fill="#4a5a2a"/>
+          <path d="M20 40 Q40 6 60 40 L60 34 Q40 0 20 34Z" fill="#4a5a2a"/>
           <rect x="26" y="38" width="28" height="9" rx="4" fill="#111"/>
           <rect x="14" y="62" width="52" height="18" rx="8" fill="#556b2f"/>
         </svg>
         MASCULINO
       </div>
-
       <div class="card" id="fem">
         <svg viewBox="0 0 80 80">
-          <path d="M56 44 Q74 48 66 70 Q60 58 54 54 Z" fill="#6b4a2b"/>
+          <path d="M56 44 Q74 48 66 70 Q60 58 54 54Z" fill="#6b4a2b"/>
           <circle cx="40" cy="44" r="18" fill="#e0b48a"/>
-          <path d="M20 40 Q40 6 60 40 L60 34 Q40 0 20 34 Z" fill="#4a5a2a"/>
+          <path d="M20 40 Q40 6 60 40 L60 34 Q40 0 20 34Z" fill="#4a5a2a"/>
           <rect x="26" y="38" width="28" height="9" rx="4" fill="#111"/>
           <rect x="14" y="62" width="52" height="18" rx="8" fill="#556b2f"/>
         </svg>
         FEMININO
       </div>
-
     </div>
   </div>
 </div>
@@ -439,175 +275,119 @@ button.peq{
   <div class="sombra"></div>
 
   <div class="moedas">
-    <div class="pilula">
-      💎 <span id="diamantes">0</span>
-    </div>
-
-    <div class="pilula">
-      🪙 <span id="ouro">0</span>
-    </div>
-
+    <div class="pilula">💎 <span id="diamantes">0</span></div>
+    <div class="pilula">🪙 <span id="ouro">0</span></div>
     <button id="avatar" class="peq">?</button>
   </div>
 
   <div class="lateral">
-
-    <div class="lat" data-msg="Loja: em breve">
-      <span>🛒</span>LOJA
-    </div>
-
-    <div class="lat" data-msg="Passe: em breve">
-      <span>🎫</span>PASSE
-    </div>
-
-    <div class="lat" data-msg="Inventário: em breve">
-      <span>🎒</span>INVENTÁRIO
-    </div>
-
+    <div class="lat" data-msg="Loja: em breve"><span>🛒</span>LOJA</div>
+    <div class="lat" data-msg="Passe: em breve"><span>🎫</span>PASSE</div>
+    <div class="lat" data-msg="Inventário: em breve"><span>🎒</span>INVENTÁRIO</div>
   </div>
 
   <div class="direita">
-
     <div class="modos">
-      <div class="modo ativo" id="mClassico">
-        CLÁSSICO
-      </div>
-
-      <div class="modo bloq" id="mRank">
-        RANQUEADO
-      </div>
+      <div class="modo ativo" id="mClassico">CLÁSSICO</div>
+      <div class="modo bloq" id="mRank">RANQUEADO</div>
     </div>
-
-    <button id="iniciar">
-      INICIAR PARTIDA
-    </button>
-
+    <button id="iniciar">INICIAR PARTIDA</button>
   </div>
+</div>
+
+<!-- CARREGAMENTO DA ILHA -->
+
+<div id="carregando" class="tela">
+  <div class="escura"></div>
+  <div class="base">
+    <div id="textoCarga">CARREGANDO ILHA...</div>
+    <div id="carga"><div id="barraIlha" style="width:0;height:100%;background:#ffb300"></div></div>
+    <div id="porcentagem">0%</div>
+  </div>
+</div>
+
+<!-- SALA DE ESPERA -->
+
+<div id="sala" class="tela">
+  <div class="sala-escura"></div>
+
+  <div class="topo-sala">
+    <div class="info-sala">🏝️ ILHA DE ESPERA</div>
+    <div class="info-sala">SALTO FINAL</div>
+  </div>
+
+  <div id="contador">
+    <div id="mensagem-tempo">AVIÃO EM</div>
+    <div id="tempo">20</div>
+    <div>SEGUNDOS</div>
+  </div>
+
+  <div id="vagas">👥 JOGADORES: 1/45</div>
 </div>
 
 <!-- PERFIL -->
 
 <div id="perfil">
-
   <div class="caixa">
-
     <div class="av-grande" id="pAv">?</div>
-
     <div id="pNome"></div>
-
     <div id="pTipo"></div>
-
     <div id="pNivel">Nível 1</div>
-
     <div class="linha">
-      <button id="trocar" class="peq">
-        TROCAR NOME
-      </button>
-
-      <button id="fechar" class="peq">
-        FECHAR
-      </button>
+      <button id="trocar" class="peq">TROCAR NOME</button>
+      <button id="fechar" class="peq">FECHAR</button>
     </div>
-
   </div>
-
 </div>
 
 <div id="toast"></div>
 
 <script>
+var $=function(i){return document.getElementById(i)};
 
-var $=function(i){
-  return document.getElementById(i);
-};
-
-var barra=$('barra'),
-txt=$('txt'),
-pct=$('pct'),
-comecar=$('comecar'),
-carga=$('carga'),
-abertura=$('abertura'),
-telaNome=$('nome'),
-telaPers=$('pers'),
-lobby=$('lobby'),
-inp=$('inpNome'),
-erro=$('erro'),
-toast=$('toast'),
-perfil=$('perfil');
+var abertura=$('abertura');
+var telaNome=$('nome');
+var telaPers=$('pers');
+var lobby=$('lobby');
+var carregando=$('carregando');
+var sala=$('sala');
+var inp=$('inpNome');
+var erro=$('erro');
+var perfil=$('perfil');
+var toast=$('toast');
 
 function mostrar(t){
-  abertura.style.display='none';
-  telaNome.style.display='none';
-  telaPers.style.display='none';
-  lobby.style.display='none';
+  [abertura,telaNome,telaPers,lobby,carregando,sala]
+  .forEach(function(el){el.style.display='none'});
   t.style.display='block';
 }
 
-var tt;
-
+var avisoTimer;
 function aviso(m){
   toast.textContent=m;
   toast.style.display='block';
-
-  clearTimeout(tt);
-
-  tt=setTimeout(function(){
+  clearTimeout(avisoTimer);
+  avisoTimer=setTimeout(function(){
     toast.style.display='none';
   },1800);
 }
 
-/* IMAGENS DO JOGO */
-
-var FUNDO_A='Screenshot_20261115-153556_Fotos~2.jpg';
-var FUNDO_L='Screenshot_20261115-133440_Dola.png';
-
-var pronto=0;
-var total=2;
-
-function ok(){
-  pronto++;
-}
-
-[FUNDO_A,FUNDO_L].forEach(function(u){
-  var im=new Image();
-
-  im.onload=ok;
-  im.onerror=ok;
-
-  im.src=u;
-});
-
-/* CARREGAMENTO */
+/* CARREGAMENTO INICIAL */
 
 var p=0;
-
 var t=setInterval(function(){
-
-  p+=Math.random()*2+0.8;
-
-  if(p>90 && pronto<total){
-    p=90;
-  }
-
+  p+=1.5;
   if(p>=100){
-
     p=100;
-
     clearInterval(t);
-
-    txt.textContent='PRONTO!';
-
-    carga.style.display='none';
-    pct.style.display='none';
-
-    comecar.style.display='block';
+    $('txt').textContent='PRONTO!';
+    $('carga').style.display='none';
+    $('pct').style.display='none';
+    $('comecar').style.display='block';
   }
-
-  barra.style.width=p+'%';
-
-  pct.textContent=Math.floor(p)+'%';
-
-},100);
+  $('barra').style.width=p+'%';
+  $('pct').textContent=Math.floor(p)+'%';
+},70);
 
 /* DADOS DO JOGADOR */
 
@@ -619,146 +399,160 @@ try{
   genero=localStorage.getItem('sf_genero')||'';
 }catch(e){}
 
-/* ATUALIZAR PERFIL */
-
 function atualizarPerfil(){
-
   var ini=(salvo||'?').charAt(0).toUpperCase();
-
   $('avatar').textContent=ini;
   $('pAv').textContent=ini;
   $('pNome').textContent=salvo;
-
-  $('pTipo').textContent=
-    'Personagem '+(genero==='fem'?'feminino':'masculino');
+  $('pTipo').textContent='Personagem '+(genero==='fem'?'feminino':'masculino');
 }
 
-/* COMEÇAR */
+/* INÍCIO */
 
-comecar.onclick=function(){
-
+$('comecar').onclick=function(){
   inp.value=salvo;
-
   mostrar(telaNome);
-
 };
 
-/* CONFIRMAR NOME */
-
 $('confirmar').onclick=function(){
-
   var n=inp.value.trim();
 
   if(n.length<2){
-
     erro.textContent='Escolha um nome com 2 letras ou mais';
-
     return;
   }
 
   erro.textContent='';
-
   salvo=n;
 
-  try{
-    localStorage.setItem('sf_nome',n);
-  }catch(e){}
+  try{localStorage.setItem('sf_nome',n)}catch(e){}
 
   mostrar(telaPers);
-
 };
 
-/* ESCOLHER PERSONAGEM */
+/* PERSONAGEM */
 
 function escolher(g){
-
   genero=g;
-
-  try{
-    localStorage.setItem('sf_genero',g);
-  }catch(e){}
-
+  try{localStorage.setItem('sf_genero',g)}catch(e){}
   atualizarPerfil();
-
   mostrar(lobby);
-
 }
 
-$('masc').onclick=function(){
-  escolher('masc');
-};
-
-$('fem').onclick=function(){
-  escolher('fem');
-};
+$('masc').onclick=function(){escolher('masc')};
+$('fem').onclick=function(){escolher('fem')};
 
 /* PERFIL */
 
 $('avatar').onclick=function(){
-
   atualizarPerfil();
-
   perfil.style.display='block';
-
 };
 
 $('fechar').onclick=function(){
-
   perfil.style.display='none';
-
 };
 
 $('trocar').onclick=function(){
-
   perfil.style.display='none';
-
   inp.value=salvo;
-
   mostrar(telaNome);
-
 };
 
 /* BOTÕES LATERAIS */
 
-var lats=document.querySelectorAll('.lat');
+document.querySelectorAll('.lat').forEach(function(el){
+  el.onclick=function(){
+    aviso(el.getAttribute('data-msg'));
+  };
+});
 
-for(var i=0;i<lats.length;i++){
-
-  (function(el){
-
-    el.onclick=function(){
-
-      aviso(el.getAttribute('data-msg'));
-
-    };
-
-  })(lats[i]);
-
-}
-
-/* MODOS DE JOGO */
+/* MODOS */
 
 $('mClassico').onclick=function(){
-
   aviso('Modo Clássico selecionado');
-
 };
 
 $('mRank').onclick=function(){
-
   aviso('Ranqueado: em breve');
-
 };
+
+/* ENTRADA NA SALA DE ESPERA */
+
+var intervaloIlha=null;
+var intervaloTempo=null;
+
+function entrarNaIlha(){
+
+  mostrar(carregando);
+
+  var progresso=0;
+
+  $('barraIlha').style.width='0%';
+  $('porcentagem').textContent='0%';
+  $('textoCarga').textContent='CARREGANDO ILHA...';
+
+  clearInterval(intervaloIlha);
+
+  intervaloIlha=setInterval(function(){
+
+    progresso+=2;
+
+    if(progresso>=100){
+      progresso=100;
+      clearInterval(intervaloIlha);
+
+      $('barraIlha').style.width='100%';
+      $('porcentagem').textContent='100%';
+
+      setTimeout(iniciarSala,500);
+    }
+
+    $('barraIlha').style.width=progresso+'%';
+    $('porcentagem').textContent=progresso+'%';
+
+  },45);
+}
+
+/* CONTAGEM REGRESSIVA */
+
+function iniciarSala(){
+
+  mostrar(sala);
+
+  clearInterval(intervaloTempo);
+
+  var segundos=20;
+
+  $('tempo').textContent=segundos;
+  $('mensagem-tempo').textContent='AVIÃO EM';
+
+  intervaloTempo=setInterval(function(){
+
+    segundos--;
+
+    $('tempo').textContent=segundos;
+
+    if(segundos<=0){
+
+      clearInterval(intervaloTempo);
+
+      $('tempo').textContent='00';
+      $('mensagem-tempo').textContent='TEMPO ENCERRADO';
+
+      aviso('Preparando embarque no avião!');
+
+    }
+
+  },1000);
+}
 
 /* INICIAR PARTIDA */
 
 $('iniciar').onclick=function(){
-
-  aviso('Em breve: a partida!');
-
+  entrarNaIlha();
 };
 
 </script>
-
 </body>
 </html>
