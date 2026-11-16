@@ -10,213 +10,327 @@ html,body{height:100%;background:#000;color:#fff;overflow:hidden}
 
 .tela{position:fixed;inset:0;background:#000 center/cover no-repeat;display:none;flex-direction:column;align-items:center;justify-content:center}
 .ativa{display:flex}
-.sombra{position:absolute;inset:0;background:rgba(0,0,0,0.4);z-index:1}
-.conteudo{position:relative;z-index:2;text-align:center;width:100%;padding:20px}
+.sombra{position:absolute;inset:0;background:rgba(0,0,0,0.3);z-index:1}
+.conteudo{position:relative;z-index:2;width:100%;height:100%}
 
-/* 📸 FUNDOS CORRIGIDOS ✅ */
-#tela-carregamento, #tela-nome, #tela-personagem{
-  background-image:url("Screenshot_20261115-153556_Fotos~2.jpg");
-}
 #tela-lobby{
   background-image:url("Screenshot_20261115-161520_Dola.png");
 }
 
-.txt-carregando{font-size:26px;margin-bottom:25px;text-shadow:0 2px 6px #000; font-weight:bold}
-.barra-fundo{width:300px;height:16px;border-radius:8px;background:rgba(0,0,0,0.6);border:2px solid #ffc107;margin:0 auto 15px}
-.barra-progresso{width:0;height:100%;background:linear-gradient(90deg,#ff6f00,#ffc107);border-radius:6px;transition:width 0.15s ease}
-.pct{font-size:18px;color:#ffc107;font-weight:bold;margin-bottom:30px}
+/* ===== MENU LATERAL ESQUERDO — mais encostado na borda ✅ ===== */
+.menu-esquerdo{
+  position:absolute;
+  left:18px; /* Mais pra esquerda, encostado na borda ✅ */
+  top:55%; /* Entre o meio e embaixo da tela ✅ */
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  z-index:3;
+}
+.item-menu{
+  background:rgba(0,0,0,0.55);
+  border-radius:8px;
+  padding:10px 16px;
+  text-align:center;
+  color:#fff;
+  cursor:pointer;
+  transition:all 0.2s;
+  font-size:15px;
+  min-width:135px;
+}
+.item-menu:hover{
+  background:rgba(255,193,7,0.2);
+  color:#ffc107;
+}
 
-.btn{padding:14px 45px;font-size:20px;font-weight:bold;border:none;border-radius:8px;background:#ffc107;color:#000;cursor:pointer;box-shadow:0 4px 0 #b38600;transition:all 0.1s}
-.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #b38600}
-.escondido{display:none !important}
+/* ===== CANTO SUPERIOR DIREITO ===== */
+.canto-superior-direito{
+  position:absolute;
+  top:20px;
+  right:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  z-index:3;
+}
+.moeda{
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:6px 12px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:15px;
+}
+.foto-perfil{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:2px solid #ffc107;
+  overflow:hidden;
+  cursor:pointer;
+}
+.foto-perfil img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-.caixa{background:rgba(0,0,0,0.75);padding:35px 25px;border-radius:12px;width:90%;max-width:360px}
-.caixa h2{color:#ffc107;margin-bottom:25px;font-size:24px}
-.campo-nome{width:100%;padding:14px;font-size:18px;border:2px solid #ffc107;border-radius:8px;background:rgba(0,0,0,0.5);color:#fff;text-align:center;margin-bottom:15px;outline:none}
-.erro{color:#ff6b6b;font-size:15px;height:24px;margin-bottom:12px}
+.botao-ajustes-topo{
+  position:absolute;
+  top:76px;
+  right:25px;
+  background:rgba(0,0,0,0.65);
+  border-radius:50%;
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  cursor:pointer;
+  border:2px solid #666;
+  transition:all 0.2s;
+  z-index:3;
+}
+.botao-ajustes-topo:hover{
+  border-color:#ffc107;
+  background:rgba(255,193,7,0.15);
+}
 
-/* 👥 PERSONAGENS LADO A LADO, MENORES ✅ */
-.personagens{display:flex;gap:25px;justify-content:center;align-items:center;margin:30px 0}
-.card{background:rgba(0,0,0,0.6);border:3px solid #444;border-radius:10px;padding:12px;cursor:pointer;width:130px;transition:all 0.2s}
-.card.selecionado{border-color:#ffc107;transform:scale(1.05);background:rgba(255,193,7,0.1)}
-.card img{width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:8px}
-.card span{display:block;font-size:16px;font-weight:bold;color:#ffc107}
+/* ===== PERSONAGEM CENTRO — mantido como está ✅ ===== */
+.personagem-centro{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:2;
+}
+.personagem-centro img{
+  max-width:140px;
+  max-height:240px;
+  border-radius:8px;
+}
 
-/* Botão Confirmar no centro, embaixo ✅ */
-.botao-centro{margin-top:10px;text-align:center}
+/* ===== INFERIOR DIREITO — mais encostado e menor ✅ ===== */
+.caixa-inferior-direita{
+  position:absolute;
+  right:18px; /* Mais encostado na borda direita ✅ */
+  bottom:28px;
+  text-align:right;
+  z-index:3;
+}
+.modos{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-bottom:10px;
+}
+.modo{
+  padding:7px 15px; /* Menor ✅ */
+  border-radius:6px;
+  border:2px solid rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.4);
+  color:#fff;
+  cursor:pointer;
+  font-size:14px; /* Menor ✅ */
+  transition:all 0.2s;
+}
+.modo.ativo{
+  border-color:#ffc107;
+  background:rgba(255,193,7,0.15);
+  color:#ffc107;
+}
+.btn{
+  padding:10px 30px; /* Menor ✅ */
+  font-size:16px; /* Menor ✅ */
+  font-weight:bold;
+  border:none;
+  border-radius:8px;
+  background:#ffc107;
+  color:#000;
+  cursor:pointer;
+  box-shadow:0 3px 0 #b38600;
+  transition:all 0.1s;
+}
+.btn:active{
+  transform:translateY(2px);
+  box-shadow:0 1px 0 #b38600;
+}
 
-/* Lobby */
-.canto-superior{position:absolute;top:20px;right:20px;display:flex;gap:12px;align-items:center;z-index:2}
-.moeda{background:rgba(0,0,0,0.65);border-radius:20px;padding:8px 14px;font-weight:bold;display:flex;align-items:center;gap:6px}
-.avatar{width:44px;height:44px;border-radius:50%;background:#ffc107;color:#000;font-weight:bold;font-size:20px;display:flex;align-items:center;justify-content:center}
-
-.personagem-centro{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);text-align:center;z-index:2}
-.personagem-centro img{max-width:240px;max-height:360px;border-radius:8px}
-.nome-personagem{margin-top:12px;font-size:24px;font-weight:bold;color:#ffc107;text-shadow:0 2px 6px #000}
-.nome-jogador{font-size:16px;color:#fff;margin-top:5px;text-shadow:0 1px 4px #000}
-
-.lado-esquerdo{position:absolute;left:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:2}
-.item-lado{background:rgba(0,0,0,0.55);border-radius:8px;padding:12px 18px;text-align:center;color:#fff;cursor:pointer;transition:all 0.2s}
-.item-lado:hover{background:rgba(255,193,7,0.2);color:#ffc107}
-
-.lado-inferior{position:absolute;right:30px;bottom:40px;text-align:right;z-index:2}
-.modos{display:flex;gap:10px;margin-bottom:15px;justify-content:flex-end}
-.modo{padding:10px 18px;border-radius:6px;border:2px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.4);color:#fff;cursor:pointer;transition:all 0.2s}
-.modo.ativo{border-color:#ffc107;background:rgba(255,193,7,0.15);color:#ffc107}
+/* ===== JANELA DE CONFIGURAÇÕES ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+}
+.overlay.abrir{
+  display:flex;
+}
+.janela-config{
+  background:#1a1a1a;
+  border:2px solid #444;
+  border-radius:12px;
+  padding:25px;
+  width:90%;
+  max-width:380px;
+  max-height:80vh;
+  overflow-y:auto;
+}
+.janela-config h2{
+  color:#ffc107;
+  text-align:center;
+  margin-bottom:22px;
+  font-size:20px;
+}
+.opcao-config{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid #333;
+  font-size:15px;
+}
+.opcao-config:last-child{border-bottom:none}
+.toggle{
+  width:44px;
+  height:24px;
+  background:#555;
+  border-radius:12px;
+  position:relative;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.toggle.ativo{
+  background:#ffc107;
+}
+.toggle::after{
+  content:'';
+  position:absolute;
+  top:2px;
+  left:2px;
+  width:18px;
+  height:18px;
+  background:#fff;
+  border-radius:50%;
+  transition:all 0.2s;
+}
+.toggle.ativo::after{
+  left:24px;
+}
+.btn-fechar{
+  margin-top:20px;
+  width:100%;
+  padding:10px;
+  background:#444;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-size:15px;
+  cursor:pointer;
+}
+.btn-fechar:hover{
+  background:#555;
+}
 </style>
 </head>
 <body>
 
-<!-- 🖥️ TELA 1: Carregamento -->
-<div id="tela-carregamento" class="tela ativa">
+<div id="tela-lobby" class="tela ativa">
   <div class="sombra"></div>
   <div class="conteudo">
-    <div class="txt-carregando">SALTO FINAL</div>
-    <div class="barra-fundo"><div id="barra" class="barra-progresso"></div></div>
-    <div class="pct" id="pct">0%</div>
-    <button id="btn-avancar" class="btn escondido">INICIAR JOGO</button>
-  </div>
-</div>
 
-<!-- ✍️ TELA 2: Digitar Nome -->
-<div id="tela-nome" class="tela">
-  <div class="sombra"></div>
-  <div class="conteudo">
-    <div class="caixa">
-      <h2>SEU NOME</h2>
-      <input type="text" id="nome-input" class="campo-nome" placeholder="Digite seu nome" maxlength="12">
-      <div class="erro" id="nome-erro"></div>
-      <button id="btn-nome" class="btn">CONFIRMAR</button>
+    <!-- Menu mais pra esquerda e mais baixo ✅ -->
+    <div class="menu-esquerdo">
+      <div class="item-menu">🛒 LOJA</div>
+      <div class="item-menu">🎫 PASSE</div>
+      <div class="item-menu">🎒 INVENTÁRIO</div>
+      <div class="item-menu">🏅 RANKING</div>
     </div>
-  </div>
-</div>
 
-<!-- 👥 TELA 3: Escolher Personagem -->
-<div id="tela-personagem" class="tela">
-  <div class="sombra"></div>
-  <div class="conteudo">
-    <div class="caixa">
-      <h2>ESCOLHA SEU PERSONAGEM</h2>
-      
-      <!-- Personagens LADO A LADO ✅ -->
-      <div class="personagens">
-        <div class="card" data-pers="dario" data-img="Screenshot_20261116-105650_Dola~2.jpg">
-          <img src="Screenshot_20261116-105650_Dola~2.jpg" alt="Dário">
-          <span>DÁRIO</span>
-        </div>
-        <div class="card" data-pers="lara" data-img="Screenshot_20261116-105716_Dola~2.jpg">
-          <img src="Screenshot_20261116-105716_Dola~2.jpg" alt="Lara">
-          <span>LARA</span>
-        </div>
-      </div>
-      
-      <!-- Botão Confirmar no centro, embaixo ✅ -->
-      <div class="botao-centro">
-        <button id="btn-pers" class="btn escondido">CONFIRMAR</button>
+    <div class="canto-superior-direito">
+      <div class="moeda">💎 0</div>
+      <div class="moeda">🪙 0</div>
+      <div class="foto-perfil" id="botao-perfil">
+        <img src="Screenshot_20261116-105650_Dola~2.jpg" alt="Perfil">
       </div>
     </div>
+
+    <div class="botao-ajustes-topo" id="botao-config">⚙️</div>
+
+    <!-- Foto do personagem mantida ✅ -->
+    <div class="personagem-centro">
+      <img src="Screenshot_20261116-105650_Dola~2.jpg" alt="Dário">
+    </div>
+
+    <!-- Clássico, Ranqueado e Iniciar Partida menores e mais encostados ✅ -->
+    <div class="caixa-inferior-direita">
+      <div class="modos">
+        <div class="modo ativo">CLÁSSICO</div>
+        <div class="modo">RANQUEADO</div>
+      </div>
+      <button class="btn">INICIAR PARTIDA</button>
+    </div>
+
   </div>
 </div>
 
-<!-- 🏝️ TELA 4: Lobby -->
-<div id="tela-lobby" class="tela">
-  <div class="sombra"></div>
-  <div class="canto-superior">
-    <div class="moeda">💎 0</div>
-    <div class="moeda">🪙 0</div>
-    <div class="avatar" id="inicial-nome">M</div>
-  </div>
-  <div class="personagem-centro">
-    <img id="img-pers" src="" alt="">
-    <div class="nome-personagem" id="nome-personagem"></div>
-    <div class="nome-jogador" id="nome-jogador"></div>
-  </div>
-  <div class="lado-esquerdo">
-    <div class="item-lado">🛒 LOJA</div>
-    <div class="item-lado">🎫 PASSE</div>
-    <div class="item-lado">🎒 INVENTÁRIO</div>
-    <div class="item-lado">🏅 RANKING</div>
-    <div class="item-lado">⚙️ AJUSTES</div>
-  </div>
-  <div class="lado-inferior">
-    <div class="modos">
-      <div class="modo ativo">CLÁSSICO</div>
-      <div class="modo">RANQUEADO</div>
+<div class="overlay" id="janela-config">
+  <div class="janela-config">
+    <h2>⚙️ CONFIGURAÇÕES</h2>
+    
+    <div class="opcao-config">
+      <span>🎵 Som do Jogo</span>
+      <div class="toggle ativo" data-opcao="som"></div>
     </div>
-    <button class="btn">INICIAR PARTIDA</button>
+    <div class="opcao-config">
+      <span>🔊 Música</span>
+      <div class="toggle ativo" data-opcao="musica"></div>
+    </div>
+    <div class="opcao-config">
+      <span>📵 Vibração</span>
+      <div class="toggle" data-opcao="vibracao"></div>
+    </div>
+    <div class="opcao-config">
+      <span>🎯 Mostrar FPS</span>
+      <div class="toggle" data-opcao="fps"></div>
+    </div>
+    <div class="opcao-config">
+      <span>📊 HUD Simplificado</span>
+      <div class="toggle" data-opcao="hud"></div>
+    </div>
+    <div class="opcao-config">
+      <span>🖱️ Sensibilidade</span>
+      <span>Padrão</span>
+    </div>
+    <div class="opcao-config">
+      <span>📱 Controles</span>
+      <span>Toque</span>
+    </div>
+
+    <button class="btn-fechar" id="fechar-config">FECHAR</button>
   </div>
 </div>
 
 <script>
-let nomeDoJogador = '';
-let persEscolhido = null;
+const botaoConfig = document.getElementById('botao-config');
+const janelaConfig = document.getElementById('janela-config');
+const fecharConfig = document.getElementById('fechar-config');
 
-function mostrar(telaAlvo){
-  document.querySelectorAll('.tela').forEach(t=>t.classList.remove('ativa'));
-  telaAlvo.classList.add('ativa');
-}
+botaoConfig.onclick = () => janelaConfig.classList.add('abrir');
+fecharConfig.onclick = () => janelaConfig.classList.remove('abrir');
 
-// 🖥️ Barra de Carregamento
-let prog = 0;
-const barraInterval = setInterval(()=>{
-  prog += Math.random() * 12;
-  if(prog >= 100){
-    prog = 100;
-    clearInterval(barraInterval);
-    document.getElementById('pct').textContent = 'PRONTO!';
-    document.getElementById('btn-avancar').classList.remove('escondido');
-  }else{
-    document.getElementById('pct').textContent = Math.floor(prog) + '%';
-  }
-  document.getElementById('barra').style.width = prog + '%';
-}, 180);
-
-// Avança pra digitar nome
-document.getElementById('btn-avancar').onclick = () => mostrar(document.getElementById('tela-nome'));
-
-// ✍️ Confirma nome
-document.getElementById('btn-nome').onclick = ()=>{
-  const input = document.getElementById('nome-input');
-  nomeDoJogador = input.value.trim();
-  if(nomeDoJogador.length < 2){
-    document.getElementById('nome-erro').textContent = 'Digite pelo menos 2 letras';
-    return;
-  }
-  document.getElementById('nome-erro').textContent = '';
-  mostrar(document.getElementById('tela-personagem'));
-};
-
-// 👥 Escolher personagem
-const cards = document.querySelectorAll('.card');
-const btnConfirmarPers = document.getElementById('btn-pers');
-
-cards.forEach(card=>{
-  card.onclick = ()=>{
-    // Marca seleção
-    cards.forEach(c=>c.classList.remove('selecionado'));
-    card.classList.add('selecionado');
-    persEscolhido = {
-      nome: card.dataset.pers,
-      imagem: card.dataset.img
-    };
-    // Mostra botão Confirmar
-    btnConfirmarPers.classList.remove('escondido');
-  };
+document.querySelectorAll('.toggle').forEach(toggle => {
+  toggle.onclick = () => toggle.classList.toggle('ativo');
 });
-
-// ✅ Confirmar → vai pro Lobby
-btnConfirmarPers.onclick = ()=>{
-  if(!persEscolhido) return;
-  
-  // Preenche dados no Lobby
-  document.getElementById('img-pers').src = persEscolhido.imagem;
-  document.getElementById('nome-personagem').textContent = persEscolhido.nome.toUpperCase();
-  document.getElementById('nome-jogador').textContent = 'Jogador: ' + nomeDoJogador;
-  document.getElementById('inicial-nome').textContent = nomeDoJogador[0].toUpperCase();
-  
-  // Vai pro Lobby
-  mostrar(document.getElementById('tela-lobby'));
-};
 </script>
+
 </body>
 </html>
