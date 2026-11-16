@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -126,53 +125,66 @@ button.peq{
 /* SALA DE ESPERA */
 
 #sala{
-  background:none;
+  background:#000;
   overflow:hidden;
 }
 
-/* CENÁRIO DA ILHA */
+/* CENÁRIO DA SUA ILHA + PERSONAGENS DENTRO */
 
 #mundo{
   position:absolute;
-  inset:-8%;
+  inset:0;
   background:url("Screenshot_20261115-161520_Dola.png") center/cover no-repeat;
-  transform:translate(0,0) scale(1.02);
+  transform-origin:center center;
+  transform:scale(1.32) translate(0%,0%);
   will-change:transform;
 }
 
 .sala-escura{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom,#0009,transparent 35%,#0005);
+  background:linear-gradient(to bottom,#0008,transparent 30%,#0004);
   pointer-events:none;
+  z-index:3;
 }
 
 .topo-sala{
   position:absolute;top:3%;left:0;right:0;
   display:flex;justify-content:space-between;
   align-items:center;padding:0 3%;
-  z-index:4;
+  z-index:6;pointer-events:none;
+}
+.topo-dir{
+  display:flex;align-items:center;gap:8px;
+  pointer-events:auto;
 }
 .info-sala{
   background:#000b;border:1px solid #fff5;
-  border-radius:10px;padding:10px 14px;
-  font-weight:bold;font-size:clamp(12px,2.5vw,18px);
+  border-radius:10px;padding:8px 12px;
+  font-weight:bold;font-size:clamp(11px,2.2vw,16px);
+}
+#sairIlha{
+  padding:8px 12px;font-size:12px;
+  background:#c62828;color:#fff;
+  border-radius:10px;box-shadow:none;
+  border:1px solid #fff5;
 }
 
 /* CONTADOR */
 
 #contador{
-  position:absolute;top:17%;left:50%;
+  position:absolute;top:14%;left:50%;
   transform:translateX(-50%);
   background:#000c;border:2px solid #ffb300;
-  border-radius:14px;padding:12px 25px;
-  text-align:center;min-width:160px;
-  z-index:4;
+  border-radius:14px;padding:8px 20px;
+  text-align:center;min-width:140px;
+  z-index:6;pointer-events:none;
 }
 #tempo{
-  color:#ffca28;font-size:clamp(30px,6vw,48px);
-  font-weight:bold;
+  color:#ffca28;font-size:clamp(26px,5vw,42px);
+  font-weight:bold;line-height:1.1;
 }
-#mensagem-tempo{font-size:12px;letter-spacing:2px}
+#mensagem-tempo{font-size:11px;letter-spacing:2px}
+#sub-tempo{font-size:11px;letter-spacing:1px}
 
 /* JOGADORES */
 
@@ -180,117 +192,171 @@ button.peq{
   position:absolute;bottom:3%;left:50%;
   transform:translateX(-50%);
   background:#000d;border:1px solid #ffb300;
-  border-radius:12px;padding:10px 20px;
-  font-weight:bold;font-size:clamp(13px,3vw,19px);
-  white-space:nowrap;z-index:4;
+  border-radius:12px;padding:8px 18px;
+  font-weight:bold;font-size:clamp(12px,2.5vw,17px);
+  white-space:nowrap;z-index:6;pointer-events:none;
 }
 
-/* PERSONAGEM PROVISÓRIO */
+/* BONECOS (JOGADOR E BOTS) */
 
-#jogador{
+.boneco{
   position:absolute;
-  left:50%;
-  top:72%;
-  width:85px;
-  height:145px;
-  transform:translate(-50%,-50%);
+  width:58px;
+  height:98px;
+  transform:translate(-50%,-88%);
   transform-origin:center bottom;
-  z-index:2;
   pointer-events:none;
   will-change:left,top,transform;
 }
-
-#jogador svg{
-  width:100%;
-  height:100%;
+.boneco .nome-tag{
+  position:absolute;
+  bottom:102%;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000a;
+  color:#fff;
+  font-size:10px;
+  font-weight:bold;
+  padding:2px 6px;
+  border-radius:6px;
+  white-space:nowrap;
+  border:1px solid #fff3;
+}
+#jogador .nome-tag{
+  color:#ffca28;
+  border-color:#ffb300;
+}
+.boneco .sombra-chao{
+  position:absolute;
+  left:50%;bottom:2px;
+  width:38px;height:10px;
+  transform:translateX(-50%);
+  background:#0007;
+  border-radius:50%;
+  transition:transform .2s;
+}
+.boneco .corpo-wrap{
+  width:100%;height:100%;
+  transform-origin:center bottom;
+  transition:transform .12s;
+}
+.boneco svg{
+  width:100%;height:100%;
   overflow:visible;
-  filter:drop-shadow(0 5px 4px #0009);
 }
 
-#jogador.pulando{
-  animation:pulo .55s ease;
+.boneco.olhar-esq svg{transform:scaleX(-1)}
+
+.boneco.andando .corpo-wrap{
+  animation:andar .28s infinite alternate ease-in-out;
+}
+@keyframes andar{
+  0%{transform:translateY(0) rotate(-3deg)}
+  100%{transform:translateY(-4px) rotate(3deg)}
+}
+
+.boneco.agachado .corpo-wrap{
+  transform:scaleY(.72) scaleX(1.06);
+}
+.boneco.deitado .corpo-wrap{
+  transform:translateY(-10px) rotate(88deg) scale(.85);
+}
+
+.boneco.pulando .corpo-wrap{
+  animation:pulo .52s ease;
+}
+.boneco.pulando .sombra-chao{
+  transform:translateX(-50%) scale(.6);
 }
 @keyframes pulo{
-  0%,100%{margin-top:0}
-  45%{margin-top:-65px}
+  0%,100%{transform:translateY(0)}
+  45%{transform:translateY(-45px)}
 }
 
-#jogador.socando{
-  animation:soco .35s ease;
+.boneco.socando svg{
+  animation:soco .32s ease;
 }
 @keyframes soco{
-  0%,100%{transform:translate(-50%,-50%)}
-  40%{transform:translate(-50%,-50%) rotate(-12deg) scale(1.08)}
+  0%,100%{transform:translateX(0) rotate(0)}
+  40%{transform:translateX(10px) rotate(12deg)}
+}
+.boneco.olhar-esq.socando svg{
+  animation:socoEsq .32s ease;
+}
+@keyframes socoEsq{
+  0%,100%{transform:scaleX(-1) translateX(0) rotate(0)}
+  40%{transform:scaleX(-1) translateX(10px) rotate(12deg)}
 }
 
-#jogador.deitado{
-  transform:translate(-50%,-50%) rotate(90deg) scale(.85);
-}
-
-/* CONTROLES DE MOVIMENTO */
+/* CONTROLES DE CELULAR */
 
 #controles{
   position:absolute;
   inset:0;
-  z-index:5;
+  z-index:7;
   pointer-events:none;
 }
 
-#direcional{
-  position:absolute;
-  left:3%;
-  bottom:12%;
-  width:155px;
-  height:145px;
-  pointer-events:none;
-}
+/* JOYSTICK REDONDO */
 
-.mov{
+#joystickArea{
   position:absolute;
-  width:48px;
-  height:48px;
-  padding:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:23px;
-  color:white;
-  background:#000a;
-  border:2px solid #fff8;
-  border-radius:12px;
-  box-shadow:0 3px 0 #0008;
+  left:4%;
+  bottom:8%;
+  width:124px;
+  height:124px;
+  border-radius:50%;
+  background:#0006;
+  border:2px solid #fff6;
   pointer-events:auto;
+  touch-action:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-#cima{left:53px;top:0}
-#baixo{left:53px;bottom:0}
-#esquerda{left:0;top:48px}
-#direitaMov{right:0;top:48px}
+#joystickKnob{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#ffe082,#ffb300);
+  border:2px solid #fff9;
+  box-shadow:0 3px 8px #0009;
+  pointer-events:none;
+  transform:translate(0,0);
+}
+
+/* BOTÕES DE AÇÃO */
 
 #acoes{
   position:absolute;
-  right:3%;
-  bottom:12%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
+  right:3.5%;
+  bottom:7%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
   pointer-events:none;
 }
 .acao{
-  width:65px;
-  height:65px;
+  width:62px;
+  height:62px;
   border-radius:50%;
   padding:0;
-  font-size:12px;
+  font-size:11px;
   color:white;
   background:#000b;
   border:2px solid #fff8;
   box-shadow:0 3px 0 #0008;
   pointer-events:auto;
+  touch-action:none;
 }
 #pular{border-color:#ffca28}
 #socar{border-color:#ff7043}
+#agachar{border-color:#64b5f6}
 #deitar{border-color:#80cbc4}
+.acao.ativo{
+  background:#ffb300;
+  color:#222;
+}
 
 #toast{
   position:fixed;left:50%;top:14%;
@@ -427,88 +493,41 @@ button.peq{
 
 <div id="sala" class="tela">
 
-  <div id="mundo"></div>
+  <!-- SUA ILHA + PERSONAGEM + BOTS DENTRO DELA -->
+  <div id="mundo">
+    <div id="camadaBots"></div>
+    <div id="jogador" class="boneco"></div>
+  </div>
+
   <div class="sala-escura"></div>
 
   <div class="topo-sala">
     <div class="info-sala">🏝️ ILHA DE ESPERA</div>
-    <div class="info-sala">SALTO FINAL</div>
+    <div class="topo-dir">
+      <div class="info-sala">SALTO FINAL</div>
+      <button id="sairIlha" class="peq">SAIR</button>
+    </div>
   </div>
 
   <div id="contador">
     <div id="mensagem-tempo">AVIÃO EM</div>
     <div id="tempo">20</div>
-    <div>SEGUNDOS</div>
-  </div>
-
-  <!-- PERSONAGEM PROVISÓRIO -->
-
-  <div id="jogador">
-    <svg viewBox="0 0 100 170">
-      <!-- pernas -->
-      <path d="M35 105 L30 145 L23 160 L42 160 L48 112Z"
-        fill="#263b50" stroke="#111" stroke-width="3"/>
-      <path d="M58 105 L64 143 L72 159 L89 159 L80 145 L77 105Z"
-        fill="#263b50" stroke="#111" stroke-width="3"/>
-
-      <!-- botas -->
-      <path d="M22 153 L42 153 L47 164 L18 164Z" fill="#171717"/>
-      <path d="M70 153 L88 153 L94 164 L69 164Z" fill="#171717"/>
-
-      <!-- corpo -->
-      <path d="M30 57 Q50 47 70 57 L79 112
-        Q50 128 21 112Z"
-        fill="#456b45" stroke="#172517" stroke-width="3"/>
-
-      <!-- braços -->
-      <path d="M30 62 L15 91 L20 111 L30 107 L27 92 L42 75Z"
-        fill="#456b45" stroke="#172517" stroke-width="3"/>
-      <path d="M70 62 L85 91 L80 111 L70 107 L73 92 L58 75Z"
-        fill="#456b45" stroke="#172517" stroke-width="3"/>
-
-      <!-- mãos -->
-      <circle cx="20" cy="112" r="7" fill="#c58d68"/>
-      <circle cx="80" cy="112" r="7" fill="#c58d68"/>
-
-      <!-- pescoço -->
-      <rect x="42" y="44" width="16" height="18" fill="#c58d68"/>
-
-      <!-- cabeça -->
-      <ellipse cx="50" cy="29" rx="19" ry="24"
-        fill="#c58d68" stroke="#704a35" stroke-width="2"/>
-
-      <!-- cabelo -->
-      <path d="M31 25 Q31 3 50 5 Q69 3 69 25
-        Q58 15 48 18 Q39 16 31 25Z"
-        fill="#28201b"/>
-
-      <!-- olhos -->
-      <circle cx="43" cy="31" r="2" fill="#111"/>
-      <circle cx="57" cy="31" r="2" fill="#111"/>
-
-      <!-- colete -->
-      <path d="M39 58 L50 76 L61 58 L67 110 L33 110Z"
-        fill="#b48b35" opacity=".9"/>
-    </svg>
+    <div id="sub-tempo">SEGUNDOS</div>
   </div>
 
   <!-- CONTROLES -->
 
   <div id="controles">
-
-    <div id="direcional">
-      <button class="mov" id="cima" data-dir="cima">▲</button>
-      <button class="mov" id="baixo" data-dir="baixo">▼</button>
-      <button class="mov" id="esquerda" data-dir="esquerda">◀</button>
-      <button class="mov" id="direitaMov" data-dir="direita">▶</button>
+    <div id="joystickArea">
+      <div id="joystickKnob"></div>
     </div>
 
     <div id="acoes">
       <button class="acao" id="pular">PULAR</button>
       <button class="acao" id="socar">SOCAR</button>
+      <button class="acao" id="agachar">AGACHAR</button>
       <button class="acao" id="deitar">DEITAR</button>
     </div>
-
   </div>
 
   <div id="vagas">👥 JOGADORES: 1/45</div>
@@ -666,216 +685,131 @@ $('mRank').onclick=function(){
   aviso('Ranqueado: em breve');
 };
 
-/* MOVIMENTAÇÃO DO PERSONAGEM */
+/* DESENHO DO BONECO (JOGADOR E BOTS) */
+
+function montarBonecoHTML(nomeTxt,camisa,calca,cabelo,fem){
+  var rabo=fem
+    ? '<path d="M27 25 Q14 34 22 52 Q29 42 32 32Z" fill="'+cabelo+'"/>'
+    : '';
+  return ''
+    +'<div class="nome-tag">'+nomeTxt+'</div>'
+    +'<div class="sombra-chao"></div>'
+    +'<div class="corpo-wrap">'
+    +'<svg viewBox="0 0 100 170">'
+      +'<path d="M35 105 L30 145 L23 160 L42 160 L48 112Z" fill="'+calca+'" stroke="#111" stroke-width="3"/>'
+      +'<path d="M58 105 L64 143 L72 159 L89 159 L80 145 L77 105Z" fill="'+calca+'" stroke="#111" stroke-width="3"/>'
+      +'<path d="M22 153 L42 153 L47 164 L18 164Z" fill="#171717"/>'
+      +'<path d="M70 153 L88 153 L94 164 L69 164Z" fill="#171717"/>'
+      +'<path d="M30 57 Q50 47 70 57 L79 112 Q50 128 21 112Z" fill="'+camisa+'" stroke="#172517" stroke-width="3"/>'
+      +'<path d="M30 62 L15 91 L20 111 L30 107 L27 92 L42 75Z" fill="'+camisa+'" stroke="#172517" stroke-width="3"/>'
+      +'<path d="M70 62 L85 91 L80 111 L70 107 L73 92 L58 75Z" fill="'+camisa+'" stroke="#172517" stroke-width="3"/>'
+      +'<circle cx="20" cy="112" r="7" fill="#c58d68"/>'
+      +'<circle cx="80" cy="112" r="7" fill="#c58d68"/>'
+      +'<rect x="42" y="44" width="16" height="18" fill="#c58d68"/>'
+      +rabo
+      +'<ellipse cx="50" cy="29" rx="19" ry="24" fill="#c58d68" stroke="#704a35" stroke-width="2"/>'
+      +'<path d="M31 25 Q31 3 50 5 Q69 3 69 25 Q58 15 48 18 Q39 16 31 25Z" fill="'+cabelo+'"/>'
+      +'<circle cx="43" cy="31" r="2" fill="#111"/>'
+      +'<circle cx="57" cy="31" r="2" fill="#111"/>'
+      +'<path d="M39 58 L50 76 L61 58 L67 110 L33 110Z" fill="#b48b35" opacity=".88"/>'
+    +'</svg>'
+    +'</div>';
+}
+
+/* PAREDE INVISÍVEL DA AREIA (IMPEDE ENTRAR NA ÁGUA OU NO CÉU) */
+
+function limitarNaAreia(x,y){
+  var ny=Math.max(46,Math.min(89,y));
+  var minX=39-((ny-46)/43)*19;
+  var maxX=86-Math.max(0,(ny-74)*0.45);
+  var nx=Math.max(minX,Math.min(maxX,x));
+  return {x:nx,y:ny};
+}
+
+/* POSICIONAR BONECO COM ESCALA DE DISTÂNCIA E PROFUNDIDADE */
+
+function aplicarPosicaoBoneco(el,x,y){
+  el.style.left=x+'%';
+  el.style.top=y+'%';
+  var escala=0.58+((y-46)/43)*0.54;
+  el.style.transform='translate(-50%,-88%) scale('+escala.toFixed(3)+')';
+  el.style.zIndex=Math.floor(y*10);
+}
+
+/* JOGADOR E CÂMERA */
 
 var jogador=$('jogador');
 var mundo=$('mundo');
 
-var posX=50;
+var posX=54;
 var posY=72;
-
-var direcoes={};
-var velocidade=0.55;
+var velocidade=0.42;
 var deitado=false;
+var agachado=false;
+
+var joyX=0,joyY=0;
+var tec={cima:false,baixo:false,esquerda:false,direita:false};
+
+function atualizarCamera(){
+  var camX=Math.max(-11.5,Math.min(11.5,(50-posX)*0.75));
+  var camY=Math.max(-11.5,Math.min(11.5,(64-posY)*0.75));
+  mundo.style.transform='scale(1.32) translate('+camX.toFixed(2)+'%, '+camY.toFixed(2)+'%)';
+}
 
 function atualizarJogador(){
-
-  posX=Math.max(8,Math.min(92,posX));
-  posY=Math.max(30,Math.min(88,posY));
-
-  jogador.style.left=posX+'%';
-  jogador.style.top=posY+'%';
-
-  /* Simulação de câmera acompanhando o jogador */
-
-  var camX=(50-posX)*0.16;
-  var camY=(65-posY)*0.12;
-
-  mundo.style.transform=
-    'translate('+camX+'%, '+camY+'%) scale(1.02)';
-
-  /* Tamanho muda conforme a distância visual */
-
-  var escala=0.65+(posY/100)*0.55;
-
-  if(!deitado){
-    jogador.style.transform=
-      'translate(-50%,-50%) scale('+escala+')';
-  }
+  var lim=limitarNaAreia(posX,posY);
+  posX=lim.x;
+  posY=lim.y;
+  aplicarPosicaoBoneco(jogador,posX,posY);
+  atualizarCamera();
 }
 
-function mover(){
+/* JOYSTICK REDONDO POR TOQUE */
 
-  if(deitado)return;
+var joyArea=$('joystickArea');
+var joyKnob=$('joystickKnob');
+var joyPointer=null;
 
-  if(direcoes.cima)posY-=velocidade;
-  if(direcoes.baixo)posY+=velocidade;
-  if(direcoes.esquerda)posX-=velocidade;
-  if(direcoes.direita)posX+=velocidade;
-
-  if(direcoes.cima||direcoes.baixo||
-     direcoes.esquerda||direcoes.direita){
-    atualizarJogador();
+function atualizarJoystick(clientX,clientY){
+  var rect=joyArea.getBoundingClientRect();
+  var cx=rect.left+rect.width/2;
+  var cy=rect.top+rect.height/2;
+  var dx=clientX-cx;
+  var dy=clientY-cy;
+  var maxR=38;
+  var dist=Math.sqrt(dx*dx+dy*dy);
+  if(dist>maxR){
+    dx=(dx/dist)*maxR;
+    dy=(dy/dist)*maxR;
   }
+  joyKnob.style.transform='translate('+dx+'px, '+dy+'px)';
+  joyX=dx/maxR;
+  joyY=dy/maxR;
 }
 
-/* CONTROLES DE TOQUE */
+function soltarJoystick(){
+  joyPointer=null;
+  joyX=0;
+  joyY=0;
+  joyKnob.style.transform='translate(0,0)';
+}
 
-document.querySelectorAll('.mov').forEach(function(botao){
-
-  var direcao=botao.getAttribute('data-dir');
-
-  botao.addEventListener('pointerdown',function(e){
-    e.preventDefault();
-    direcoes[direcao]=true;
-    botao.setPointerCapture(e.pointerId);
-  });
-
-  function soltar(){
-    direcoes[direcao]=false;
-  }
-
-  botao.addEventListener('pointerup',soltar);
-  botao.addEventListener('pointercancel',soltar);
-  botao.addEventListener('lostpointercapture',soltar);
-
+joyArea.addEventListener('pointerdown',function(e){
+  e.preventDefault();
+  joyPointer=e.pointerId;
+  joyArea.setPointerCapture(e.pointerId);
+  atualizarJoystick(e.clientX,e.clientY);
 });
-
-/* TECLADO */
-
-document.addEventListener('keydown',function(e){
-
-  if(sala.style.display==='none')return;
-
-  var tecla=e.key.toLowerCase();
-
-  if(tecla==='w'||tecla==='arrowup')direcoes.cima=true;
-  if(tecla==='s'||tecla==='arrowdown')direcoes.baixo=true;
-  if(tecla==='a'||tecla==='arrowleft')direcoes.esquerda=true;
-  if(tecla==='d'||tecla==='arrowright')direcoes.direita=true;
-  if(tecla===' ')pular();
-
+joyArea.addEventListener('pointermove',function(e){
+  if(e.pointerId!==joyPointer)return;
+  atualizarJoystick(e.clientX,e.clientY);
 });
-
-document.addEventListener('keyup',function(e){
-
-  var tecla=e.key.toLowerCase();
-
-  if(tecla==='w'||tecla==='arrowup')direcoes.cima=false;
-  if(tecla==='s'||tecla==='arrowdown')direcoes.baixo=false;
-  if(tecla==='a'||tecla==='arrowleft')direcoes.esquerda=false;
-  if(tecla==='d'||tecla==='arrowright')direcoes.direita=false;
-
+joyArea.addEventListener('pointerup',function(e){
+  if(e.pointerId===joyPointer)soltarJoystick();
 });
+joyArea.addEventListener('pointercancel',function(e){
+  if(e.pointerId===joyPointer)soltarJoystick();
+});
+joyArea.addEventListener('lostpointercapture',soltarJoystick);
 
-/* AÇÕES */
-
-function pular(){
-
-  if(sala.style.display==='none'||deitado)return;
-
-  jogador.classList.remove('pulando');
-  void jogador.offsetWidth;
-  jogador.classList.add('pulando');
-
-  setTimeout(function(){
-    jogador.classList.remove('pulando');
-  },600);
-}
-
-function socar(){
-
-  if(sala.style.display==='none'||deitado)return;
-
-  jogador.classList.remove('socando');
-  void jogador.offsetWidth;
-  jogador.classList.add('socando');
-
-  setTimeout(function(){
-    jogador.classList.remove('socando');
-  },400);
-}
-
-function alternarDeitado(){
-
-  if(sala.style.display==='none')return;
-
-  deitado=!deitado;
-
-  if(deitado){
-    direcoes={
-      cima:false,baixo:false,
-      esquerda:false,direita:false
-    };
-    jogador.classList.add('deitado');
-    jogador.style.transform='';
-    $('deitar').textContent='LEVANTAR';
-  }else{
-    jogador.classList.remove('deitado');
-    $('deitar').textContent='DEITAR';
-    atualizarJogador();
-  }
-}
-
-$('pular').onclick=pular;
-$('socar').onclick=socar;
-$('deitar').onclick=alternarDeitado;
-
-/* MOVIMENTO CONTÍNUO */
-
-setInterval(mover,30);
-
-/* ENTRADA NA SALA DE ESPERA */
-
-var intervaloIlha=null;
-var intervaloTempo=null;
-
-function entrarNaIlha(){
-
-  mostrar(carregando);
-
-  var progresso=0;
-
-  $('barraIlha').style.width='0%';
-  $('porcentagem').textContent='0%';
-  $('textoCarga').textContent='CARREGANDO ILHA...';
-
-  clearInterval(intervaloIlha);
-
-  intervaloIlha=setInterval(function(){
-
-    progresso+=2;
-
-    if(progresso>=100){
-      progresso=100;
-      clearInterval(intervaloIlha);
-
-      $('barraIlha').style.width='100%';
-      $('porcentagem').textContent='100%';
-
-      setTimeout(iniciarSala,500);
-    }
-
-    $('barraIlha').style.width=progresso+'%';
-    $('porcentagem').textContent=progresso+'%';
-
-  },45);
-}
-
-/* CONTAGEM REGRESSIVA */
-
-function iniciarSala(){
-
-  mostrar(sala);
-
-  /* Posicionamento inicial do jogador */
-
-  posX=50;
-  posY=72;
-  deitado=false;
-  direcoes={
-    cima:false,baixo:false,
-    esquerda:false,direita:false
-  };
-
-  jogador.classList.remove
+/* T
