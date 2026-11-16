@@ -11,33 +11,26 @@
 html,body{
   margin:0;width:100%;height:100%;overflow:hidden;
   background:#000;color:white;font-family:Arial,sans-serif;
-  user-select:none;
+  user-select:none;-webkit-user-select:none;
 }
 .tela{
   position:fixed;inset:0;
   background:#000 center/cover no-repeat;
 }
-.sombra{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,#000c,transparent 55%);
-}
+.sombra{position:absolute;inset:0;background:linear-gradient(to top,#000c,transparent 55%)}
 .escura{position:absolute;inset:0;background:#000a}
 
 #abertura,#nome,#pers{
   background-image:url("Screenshot_20261115-153556_Fotos~2.jpg");
 }
 #nome,#pers,#lobby,#carregando,#sala{display:none}
-
-#lobby{
-  background-image:url("Screenshot_20261115-133440_Dola.png");
-}
-
-/* BOTÕES */
+#lobby{background-image:url("Screenshot_20261115-133440_Dola.png")}
 
 button{
   padding:14px 30px;font-size:19px;font-weight:bold;
   border:0;border-radius:10px;background:#ffb300;color:#222;
   box-shadow:0 5px 0 #a66f00;
+  touch-action:none;
 }
 button:active{transform:translateY(3px)}
 button.peq{
@@ -46,7 +39,7 @@ button.peq{
   border:1px solid #fff6;
 }
 
-/* CARREGAMENTO INICIAL */
+/* CARREGAMENTO */
 
 .base{
   position:absolute;bottom:6%;left:0;right:0;
@@ -89,7 +82,7 @@ button.peq{
 }
 .card svg{width:75px;height:75px;display:block;margin:auto}
 
-/* LOBBY PRINCIPAL */
+/* LOBBY */
 
 .moedas{
   position:absolute;top:3%;right:2.5%;
@@ -130,17 +123,26 @@ button.peq{
 .modo.bloq{opacity:.6}
 #iniciar{padding:13px 28px}
 
-/* NOVA SALA DE ESPERA */
+/* SALA DE ESPERA */
 
 #sala{
-  background-image:url("Screenshot_20261115-161520_Dola.png");
-  background-size:cover;
-  background-position:center;
+  background:none;
+  overflow:hidden;
+}
+
+/* CENÁRIO DA ILHA */
+
+#mundo{
+  position:absolute;
+  inset:-8%;
+  background:url("Screenshot_20261115-161520_Dola.png") center/cover no-repeat;
+  transform:translate(0,0) scale(1.02);
+  will-change:transform;
 }
 
 .sala-escura{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom,#0009,transparent 35%,#0008);
+  background:linear-gradient(to bottom,#0009,transparent 35%,#0005);
   pointer-events:none;
 }
 
@@ -148,13 +150,15 @@ button.peq{
   position:absolute;top:3%;left:0;right:0;
   display:flex;justify-content:space-between;
   align-items:center;padding:0 3%;
+  z-index:4;
 }
-
 .info-sala{
   background:#000b;border:1px solid #fff5;
   border-radius:10px;padding:10px 14px;
   font-weight:bold;font-size:clamp(12px,2.5vw,18px);
 }
+
+/* CONTADOR */
 
 #contador{
   position:absolute;top:17%;left:50%;
@@ -162,6 +166,7 @@ button.peq{
   background:#000c;border:2px solid #ffb300;
   border-radius:14px;padding:12px 25px;
   text-align:center;min-width:160px;
+  z-index:4;
 }
 #tempo{
   color:#ffca28;font-size:clamp(30px,6vw,48px);
@@ -169,14 +174,123 @@ button.peq{
 }
 #mensagem-tempo{font-size:12px;letter-spacing:2px}
 
+/* JOGADORES */
+
 #vagas{
-  position:absolute;bottom:5%;left:50%;
+  position:absolute;bottom:3%;left:50%;
   transform:translateX(-50%);
   background:#000d;border:1px solid #ffb300;
-  border-radius:12px;padding:12px 24px;
-  font-weight:bold;font-size:clamp(14px,3vw,20px);
-  white-space:nowrap;
+  border-radius:12px;padding:10px 20px;
+  font-weight:bold;font-size:clamp(13px,3vw,19px);
+  white-space:nowrap;z-index:4;
 }
+
+/* PERSONAGEM PROVISÓRIO */
+
+#jogador{
+  position:absolute;
+  left:50%;
+  top:72%;
+  width:85px;
+  height:145px;
+  transform:translate(-50%,-50%);
+  transform-origin:center bottom;
+  z-index:2;
+  pointer-events:none;
+  will-change:left,top,transform;
+}
+
+#jogador svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 5px 4px #0009);
+}
+
+#jogador.pulando{
+  animation:pulo .55s ease;
+}
+@keyframes pulo{
+  0%,100%{margin-top:0}
+  45%{margin-top:-65px}
+}
+
+#jogador.socando{
+  animation:soco .35s ease;
+}
+@keyframes soco{
+  0%,100%{transform:translate(-50%,-50%)}
+  40%{transform:translate(-50%,-50%) rotate(-12deg) scale(1.08)}
+}
+
+#jogador.deitado{
+  transform:translate(-50%,-50%) rotate(90deg) scale(.85);
+}
+
+/* CONTROLES DE MOVIMENTO */
+
+#controles{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+}
+
+#direcional{
+  position:absolute;
+  left:3%;
+  bottom:12%;
+  width:155px;
+  height:145px;
+  pointer-events:none;
+}
+
+.mov{
+  position:absolute;
+  width:48px;
+  height:48px;
+  padding:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:23px;
+  color:white;
+  background:#000a;
+  border:2px solid #fff8;
+  border-radius:12px;
+  box-shadow:0 3px 0 #0008;
+  pointer-events:auto;
+}
+#cima{left:53px;top:0}
+#baixo{left:53px;bottom:0}
+#esquerda{left:0;top:48px}
+#direitaMov{right:0;top:48px}
+
+#acoes{
+  position:absolute;
+  right:3%;
+  bottom:12%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  pointer-events:none;
+}
+.acao{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  padding:0;
+  font-size:12px;
+  color:white;
+  background:#000b;
+  border:2px solid #fff8;
+  box-shadow:0 3px 0 #0008;
+  pointer-events:auto;
+}
+#pular{border-color:#ffca28}
+#socar{border-color:#ff7043}
+#deitar{border-color:#80cbc4}
 
 #toast{
   position:fixed;left:50%;top:14%;
@@ -204,6 +318,7 @@ button.peq{
   position:fixed;inset:0;background:#000;
   display:none;align-items:center;justify-content:center;
   text-align:center;font-size:20px;z-index:20;
+  padding:20px;
 }
 @media(orientation:portrait){
   #girar{display:flex}
@@ -301,7 +416,9 @@ button.peq{
   <div class="escura"></div>
   <div class="base">
     <div id="textoCarga">CARREGANDO ILHA...</div>
-    <div id="carga"><div id="barraIlha" style="width:0;height:100%;background:#ffb300"></div></div>
+    <div id="carga">
+      <div id="barraIlha" style="width:0;height:100%;background:#ffb300"></div>
+    </div>
     <div id="porcentagem">0%</div>
   </div>
 </div>
@@ -309,6 +426,8 @@ button.peq{
 <!-- SALA DE ESPERA -->
 
 <div id="sala" class="tela">
+
+  <div id="mundo"></div>
   <div class="sala-escura"></div>
 
   <div class="topo-sala">
@@ -320,6 +439,76 @@ button.peq{
     <div id="mensagem-tempo">AVIÃO EM</div>
     <div id="tempo">20</div>
     <div>SEGUNDOS</div>
+  </div>
+
+  <!-- PERSONAGEM PROVISÓRIO -->
+
+  <div id="jogador">
+    <svg viewBox="0 0 100 170">
+      <!-- pernas -->
+      <path d="M35 105 L30 145 L23 160 L42 160 L48 112Z"
+        fill="#263b50" stroke="#111" stroke-width="3"/>
+      <path d="M58 105 L64 143 L72 159 L89 159 L80 145 L77 105Z"
+        fill="#263b50" stroke="#111" stroke-width="3"/>
+
+      <!-- botas -->
+      <path d="M22 153 L42 153 L47 164 L18 164Z" fill="#171717"/>
+      <path d="M70 153 L88 153 L94 164 L69 164Z" fill="#171717"/>
+
+      <!-- corpo -->
+      <path d="M30 57 Q50 47 70 57 L79 112
+        Q50 128 21 112Z"
+        fill="#456b45" stroke="#172517" stroke-width="3"/>
+
+      <!-- braços -->
+      <path d="M30 62 L15 91 L20 111 L30 107 L27 92 L42 75Z"
+        fill="#456b45" stroke="#172517" stroke-width="3"/>
+      <path d="M70 62 L85 91 L80 111 L70 107 L73 92 L58 75Z"
+        fill="#456b45" stroke="#172517" stroke-width="3"/>
+
+      <!-- mãos -->
+      <circle cx="20" cy="112" r="7" fill="#c58d68"/>
+      <circle cx="80" cy="112" r="7" fill="#c58d68"/>
+
+      <!-- pescoço -->
+      <rect x="42" y="44" width="16" height="18" fill="#c58d68"/>
+
+      <!-- cabeça -->
+      <ellipse cx="50" cy="29" rx="19" ry="24"
+        fill="#c58d68" stroke="#704a35" stroke-width="2"/>
+
+      <!-- cabelo -->
+      <path d="M31 25 Q31 3 50 5 Q69 3 69 25
+        Q58 15 48 18 Q39 16 31 25Z"
+        fill="#28201b"/>
+
+      <!-- olhos -->
+      <circle cx="43" cy="31" r="2" fill="#111"/>
+      <circle cx="57" cy="31" r="2" fill="#111"/>
+
+      <!-- colete -->
+      <path d="M39 58 L50 76 L61 58 L67 110 L33 110Z"
+        fill="#b48b35" opacity=".9"/>
+    </svg>
+  </div>
+
+  <!-- CONTROLES -->
+
+  <div id="controles">
+
+    <div id="direcional">
+      <button class="mov" id="cima" data-dir="cima">▲</button>
+      <button class="mov" id="baixo" data-dir="baixo">▼</button>
+      <button class="mov" id="esquerda" data-dir="esquerda">◀</button>
+      <button class="mov" id="direitaMov" data-dir="direita">▶</button>
+    </div>
+
+    <div id="acoes">
+      <button class="acao" id="pular">PULAR</button>
+      <button class="acao" id="socar">SOCAR</button>
+      <button class="acao" id="deitar">DEITAR</button>
+    </div>
+
   </div>
 
   <div id="vagas">👥 JOGADORES: 1/45</div>
@@ -477,6 +666,165 @@ $('mRank').onclick=function(){
   aviso('Ranqueado: em breve');
 };
 
+/* MOVIMENTAÇÃO DO PERSONAGEM */
+
+var jogador=$('jogador');
+var mundo=$('mundo');
+
+var posX=50;
+var posY=72;
+
+var direcoes={};
+var velocidade=0.55;
+var deitado=false;
+
+function atualizarJogador(){
+
+  posX=Math.max(8,Math.min(92,posX));
+  posY=Math.max(30,Math.min(88,posY));
+
+  jogador.style.left=posX+'%';
+  jogador.style.top=posY+'%';
+
+  /* Simulação de câmera acompanhando o jogador */
+
+  var camX=(50-posX)*0.16;
+  var camY=(65-posY)*0.12;
+
+  mundo.style.transform=
+    'translate('+camX+'%, '+camY+'%) scale(1.02)';
+
+  /* Tamanho muda conforme a distância visual */
+
+  var escala=0.65+(posY/100)*0.55;
+
+  if(!deitado){
+    jogador.style.transform=
+      'translate(-50%,-50%) scale('+escala+')';
+  }
+}
+
+function mover(){
+
+  if(deitado)return;
+
+  if(direcoes.cima)posY-=velocidade;
+  if(direcoes.baixo)posY+=velocidade;
+  if(direcoes.esquerda)posX-=velocidade;
+  if(direcoes.direita)posX+=velocidade;
+
+  if(direcoes.cima||direcoes.baixo||
+     direcoes.esquerda||direcoes.direita){
+    atualizarJogador();
+  }
+}
+
+/* CONTROLES DE TOQUE */
+
+document.querySelectorAll('.mov').forEach(function(botao){
+
+  var direcao=botao.getAttribute('data-dir');
+
+  botao.addEventListener('pointerdown',function(e){
+    e.preventDefault();
+    direcoes[direcao]=true;
+    botao.setPointerCapture(e.pointerId);
+  });
+
+  function soltar(){
+    direcoes[direcao]=false;
+  }
+
+  botao.addEventListener('pointerup',soltar);
+  botao.addEventListener('pointercancel',soltar);
+  botao.addEventListener('lostpointercapture',soltar);
+
+});
+
+/* TECLADO */
+
+document.addEventListener('keydown',function(e){
+
+  if(sala.style.display==='none')return;
+
+  var tecla=e.key.toLowerCase();
+
+  if(tecla==='w'||tecla==='arrowup')direcoes.cima=true;
+  if(tecla==='s'||tecla==='arrowdown')direcoes.baixo=true;
+  if(tecla==='a'||tecla==='arrowleft')direcoes.esquerda=true;
+  if(tecla==='d'||tecla==='arrowright')direcoes.direita=true;
+  if(tecla===' ')pular();
+
+});
+
+document.addEventListener('keyup',function(e){
+
+  var tecla=e.key.toLowerCase();
+
+  if(tecla==='w'||tecla==='arrowup')direcoes.cima=false;
+  if(tecla==='s'||tecla==='arrowdown')direcoes.baixo=false;
+  if(tecla==='a'||tecla==='arrowleft')direcoes.esquerda=false;
+  if(tecla==='d'||tecla==='arrowright')direcoes.direita=false;
+
+});
+
+/* AÇÕES */
+
+function pular(){
+
+  if(sala.style.display==='none'||deitado)return;
+
+  jogador.classList.remove('pulando');
+  void jogador.offsetWidth;
+  jogador.classList.add('pulando');
+
+  setTimeout(function(){
+    jogador.classList.remove('pulando');
+  },600);
+}
+
+function socar(){
+
+  if(sala.style.display==='none'||deitado)return;
+
+  jogador.classList.remove('socando');
+  void jogador.offsetWidth;
+  jogador.classList.add('socando');
+
+  setTimeout(function(){
+    jogador.classList.remove('socando');
+  },400);
+}
+
+function alternarDeitado(){
+
+  if(sala.style.display==='none')return;
+
+  deitado=!deitado;
+
+  if(deitado){
+    direcoes={
+      cima:false,baixo:false,
+      esquerda:false,direita:false
+    };
+    jogador.classList.add('deitado');
+    jogador.style.transform='';
+    $('deitar').textContent='LEVANTAR';
+  }else{
+    jogador.classList.remove('deitado');
+    $('deitar').textContent='DEITAR';
+    atualizarJogador();
+  }
+}
+
+$('pular').onclick=pular;
+$('socar').onclick=socar;
+$('deitar').onclick=alternarDeitado;
+
+/* MOVIMENTO CONTÍNUO */
+
+setInterval(mover,30);
+
 /* ENTRADA NA SALA DE ESPERA */
 
 var intervaloIlha=null;
@@ -520,39 +868,14 @@ function iniciarSala(){
 
   mostrar(sala);
 
-  clearInterval(intervaloTempo);
+  /* Posicionamento inicial do jogador */
 
-  var segundos=20;
+  posX=50;
+  posY=72;
+  deitado=false;
+  direcoes={
+    cima:false,baixo:false,
+    esquerda:false,direita:false
+  };
 
-  $('tempo').textContent=segundos;
-  $('mensagem-tempo').textContent='AVIÃO EM';
-
-  intervaloTempo=setInterval(function(){
-
-    segundos--;
-
-    $('tempo').textContent=segundos;
-
-    if(segundos<=0){
-
-      clearInterval(intervaloTempo);
-
-      $('tempo').textContent='00';
-      $('mensagem-tempo').textContent='TEMPO ENCERRADO';
-
-      aviso('Preparando embarque no avião!');
-
-    }
-
-  },1000);
-}
-
-/* INICIAR PARTIDA */
-
-$('iniciar').onclick=function(){
-  entrarNaIlha();
-};
-
-</script>
-</body>
-</html>
+  jogador.classList.remove
