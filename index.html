@@ -16,12 +16,12 @@ html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:Arial
 #abertura,#nome,#pers{background-image:var(--fundo-abertura)}
 #nome,#pers{display:none}
 #lobby{display:none;background-image:var(--fundo-lobby)}
-#abertura .base{position:absolute;left:0;right:0;bottom:6%;display:flex;flex-direction:column;align-items:center;gap:10px}
-#txt{font-weight:bold;letter-spacing:2px;font-size:clamp(14px,3vw,22px);text-shadow:0 2px 6px #000}
+#abertura .base{position:absolute;left:0;right:0;bottom:10%;display:flex;flex-direction:column;align-items:center;gap:20px}
+#txt{font-weight:bold;letter-spacing:2px;font-size:clamp(16px,4vw,26px);color:#fff;text-shadow:0 2px 6px #000}
 #carga{width:60%;max-width:520px;height:14px;border-radius:10px;background:#0008;border:2px solid #fff8;overflow:hidden}
 #barra{width:0;height:100%;background:linear-gradient(90deg,#ff6f00,#ffb300)}
 #pct{font-size:clamp(12px,2.5vw,16px);color:#ffe082;text-shadow:0 2px 6px #000}
-button{padding:14px 56px;font-size:clamp(18px,3.5vw,26px);font-weight:bold;border:none;border-radius:10px;background:#ffb300;color:#222;box-shadow:0 5px 0 #a66f00}
+button{padding:14px 56px;font-size:clamp(18px,3.5vw,26px);font-weight:bold;border:none;border-radius:10px;background:#ffb300;color:#222;box-shadow:0 5px 0 #a66f00;cursor:pointer;transition:all 0.15s}
 button:active{transform:translateY(4px);box-shadow:0 1px 0 #a66f00}
 button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shadow:none;border:1px solid #fff6}
 .caixa{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#000c;padding:22px 28px;border-radius:14px;display:flex;flex-direction:column;gap:12px;align-items:center;min-width:280px;max-height:85vh;overflow-y:auto}
@@ -40,7 +40,7 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
 .personagem-centro{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);text-align:center}
 .pers-nome{font-size:clamp(26px,6vw,48px);font-weight:bold;color:#ffb300;text-shadow:0 3px 8px #000;letter-spacing:2px}
 .pers-tipo{font-size:clamp(14px,3vw,18px);color:#fff8;margin-top:8px}
-.lateral{position:absolute;left:2%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:2}
+.lateral{position:absolute;left:2%;top:50%;transform:translate(-50%);display:flex;flex-direction:column;gap:10px;z-index:2}
 .lat{width:clamp(62px,10vw,84px);padding:8px 4px;background:#000b;border:1px solid #fff4;border-radius:12px;text-align:center;font-size:clamp(10px,2vw,12px);font-weight:bold;cursor:pointer;transition:border 0.2s}
 .lat span{display:block;font-size:clamp(18px,4vw,24px);margin-bottom:2px}
 .lat:active{border-color:#ffb300}
@@ -73,7 +73,7 @@ button.peq{padding:8px 18px;font-size:14px;background:#000a;color:#fff;box-shado
     <div id="txt">CARREGANDO PARTIDA...</div>
     <div id="carga"><div id="barra"></div></div>
     <div id="pct">0%</div>
-    <button id="comecar" style="display:none">COMEÇAR</button>
+    <button id="comecar" style="display:none">INICIAR JOGO</button>
   </div>
 </div>
 
@@ -193,13 +193,16 @@ function ok(){pronto++;}
   var im=new Image();im.onload=im.onerror=ok;im.src=u;
 });
 
+// SEMPRE COMEÇA PELA TELA DE CARREGAMENTO
 var p=0;
 var t=setInterval(function(){
   p+=Math.random()*2+0.8;
   if(p>90&&pronto<total)p=90;
   if(p>=100){
     p=100;clearInterval(t);
-    txt.textContent='PRONTO!';carga.style.display='none';pct.style.display='none';
+    txt.textContent='PRONTO!';
+    carga.style.display='none';
+    pct.style.display='none';
     comecar.style.display='block';
   }
   barra.style.width=p+'%';
@@ -217,12 +220,27 @@ function atualizarPerfil(){
   nomePersonagem=(genero==='fem'?'Lara':'Dario');
   $('pTipo').textContent='Personagem: '+nomePersonagem;
   $('pId').textContent='ID: '+meuId;
-  // Atualiza nome no centro do lobby
   $('nomePersonagem').textContent=nomePersonagem;
   $('tipoPersonagem').textContent='Jogador: '+salvo;
 }
 
-comecar.onclick=function(){inp.value=salvo;mostrar(telaNome);};
+// BOTÃO INICIAR JOGO — AQUI DECIDE PRA ONDE IR
+comecar.onclick=function(){
+  // Se já tem nome E personagem → vai direto pro lobby
+  if(salvo&&genero){
+    atualizarPerfil();
+    mostrar(lobby);
+  }
+  // Se não tem nome → vai pra tela de digitar nome
+  else if(!salvo){
+    inp.value=salvo;
+    mostrar(telaNome);
+  }
+  // Tem nome mas não tem personagem → vai pra escolher personagem
+  else{
+    mostrar(telaPers);
+  }
+};
 
 $('confirmar').onclick=function(){
   var n=inp.value.trim();
@@ -253,13 +271,6 @@ for(var i=0;i<lats.length;i++){
 $('mClassico').onclick=function(){aviso('Modo Clássico selecionado');};
 $('mRank').onclick=function(){aviso('Ranqueado: em breve');};
 $('iniciar').onclick=function(){aviso('Em breve: a partida!');};
-
-// Se já tinha escolhido, vai direto pro lobby
-if(salvo&&genero){
-  comecar.style.display='none';
-  atualizarPerfil();
-  mostrar(lobby);
-}
 </script>
 </body>
 </html>
