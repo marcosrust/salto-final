@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -878,4 +877,31 @@ function iniciarSala(){
     esquerda:false,direita:false
   };
 
-  jogador.classList.remove
+  ('pulando','socando','deitado');
+
+  jogador.style.transform='';
+  $('deitar').textContent='DEITAR';
+  atualizarJogador();
+
+  var segundos=20;
+  $('tempo').textContent=segundos;
+
+  clearInterval(intervaloTempo);
+
+  intervaloTempo=setInterval(function(){
+    segundos--;
+
+    if(segundos<=0){
+      segundos=0;
+      clearInterval(intervaloTempo);
+      $('tempo').textContent='0';
+      $('mensagem-tempo').textContent='AVIÃO PARTINDO!';
+      aviso('O avião está partindo!');
+      return;
+    }
+
+    $('tempo').textContent=segundos;
+  },1000);
+}
+
+$('iniciar').onclick=entrarNaIlha;
